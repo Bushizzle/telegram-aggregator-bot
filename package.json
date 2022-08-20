@@ -1,0 +1,24 @@
+{
+  "name": "telegram_aggregator_bot_js",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "input": "^1.0.1",
+    "mongodb": "^3.5.7",
+    "mongoose": "^5.9.13",
+    "node-fetch": "2.0.0",
+    "node-telegram-bot-api": "^0.57.0",
+    "telegram": "^2.8.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
