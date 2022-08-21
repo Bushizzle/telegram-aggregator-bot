@@ -141,6 +141,8 @@ const getPriceExpression = (priceKey) => {
 	return priceData?.expression || null;
 }
 
+const allDistrictsKeys = () => DISTRICTS.map(d => d.key);
+
 module.exports = {
 	cutChunks,
 	getDistrictId,
@@ -155,4 +157,5 @@ module.exports = {
 	editUser,
 	getDistrictsNames,
 	getPriceExpression,
+	allDistrictsKeys,
 };

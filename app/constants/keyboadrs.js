@@ -9,7 +9,7 @@ const {
 } = require('../constants/prices');
 
 const KEY_BACK = {
-	text: 'Назад',
+	text: 'СОХРАНИТЬ',
 	callback_data: 'return_to_main',
 };
 
@@ -26,13 +26,25 @@ const K_MAIN = [
 	],
 ];
 
-const mapDistrictsKeyboard = user => [
+const mapDistrictsKeyboard = districts => [
 	...cutChunks(2, DISTRICTS).map(chunk => chunk.map(
 		(d => ({
-			text: `${user.filters.districts.includes(d.key) ? '✔️' : '❌'} ${d.name}`,
+			text: `${districts.includes(d.key) ? '✔️' : '❌'} ${d.name}`,
 			callback_data: `setDistrict:${d.key}`,
 		}))
 	)),
+	[
+		{
+			text: 'ВЫБРАТЬ ВСЕ',
+			callback_data: `setDistrict:all`,
+		},
+	],
+	[
+		{
+			text: 'ОЧИСТИТЬ ВЫБОР',
+			callback_data: `setDistrict:none`,
+		},
+	],
 	[
 		KEY_BACK,
 	],
@@ -41,7 +53,7 @@ const mapDistrictsKeyboard = user => [
 const mapPriceKeyboard = user => [
 	...cutChunks(2, PRICES).map(chunk => chunk.map(
 		(p => ({
-			text: `${user.filters.price === p.key ? '✔️' : '❌'} ${p.name}`,
+			text: `${user.settings.price === p.key ? '✔️' : '❌'} ${p.name}`,
 			callback_data: `setPrice:${p.key}`,
 		}))
 	)),

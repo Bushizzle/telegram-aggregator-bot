@@ -11,7 +11,7 @@ const {
 	getDistrict,
 	getConfig,
 	isDistrict,
-} = require('./helpers');
+} = require('../helpers/channelMessages');
 
 const adapterByKeys = (message, config) => {
 	return mapStrings(message).reduce((res, str) => {

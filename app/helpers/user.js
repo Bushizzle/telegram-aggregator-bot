@@ -8,51 +8,62 @@ const newUser = (userId, name, userName) => ({
 	userId,
 	name,
 	userName,
-	filters: {
+	settings: {
 		price: 6,
 		districts: [],
-	}
+		active: true,
+	},
 });
+
+const sendToLambda = (method, data) => fetch(USERS_LAMBDA, {
+	method: method,
+	mode: 'cors',
+	body: JSON.stringify(data),
+})
+	.then(res => res.json());
 
 const addUser = async (users, userId, name, userName) => {
 	return new Promise((resolve, reject) => {
-		if (!findUser(users, userId)) {
-			const user = newUser(userId, name, userName);
-			return fetch(USERS_LAMBDA, {
-				method: 'POST',
-				mode: 'cors',
-				body: JSON.stringify(user),
-			})
-				.then(res => res.json())
+		const user = findUser(users, userId);
+		if (!user) {
+			const createdUser = newUser(userId, name, userName);
+			return sendToLambda('POST', createdUser)
 				.then(result => {
-					users.push(user);
+					users.push(createdUser);
 					resolve({result, status: 'OK', message: SUCCESS_SUBSCRIBE});
 				})
 				.catch(err => reject(err));
+		} else if (!user.settings.active) {
+			const modifiedUser = {
+				...user,
+				settings: {
+					...user.settings,
+					active: true,
+				},
+			};
+			sendToLambda('PUT', modifiedUser)
+				.then(result => {
+					users.splice(users.indexOf(user), 1, modifiedUser);
+					resolve({result, status: 'OK', message: SUCCESS_SUBSCRIBE});
+				})
 		} else {
 			resolve({status: 'ERR', message: ERR_DUPLICATE});
 		}
 	});
 }
 
-const editUser = async (users, userId, filters) => {
+const editUser = async (users, userId, settings) => {
 	return new Promise((resolve, reject) => {
 		const user = findUser(users, userId);
-		if (user) {
+		if (user?.settings.active) {
 			const modifiedUser = {
 				...user,
-				filters: {
-					...user.filters,
-					...filters,
+				settings: {
+					...user.settings,
+					...settings,
 				},
 			};
-			console.log(modifiedUser);
-			return fetch(USERS_LAMBDA, {
-				method: 'PUT',
-				mode: 'cors',
-				body: JSON.stringify(modifiedUser),
-			})
-				.then(res => res.json())
+			return sendToLambda('PUT', modifiedUser)
 				.then(result => {
 					users.splice(users.indexOf(user), 1, modifiedUser);
 					resolve({result, status: 'OK'});
@@ -66,15 +77,18 @@ const editUser = async (users, userId, filters) => {
 
 const removeUser = async (users, userId) => {
 	return new Promise((resolve, reject) => {
-		if (findUser(users, userId)) {
-			return fetch(USERS_LAMBDA, {
-				method: 'DELETE',
-				mode: 'cors',
-				body: JSON.stringify({userId}),
-			})
-				.then(res => res.json())
+		const user = findUser(users, userId);
+		const modifiedUser = {
+			...user,
+			settings: {
+				...user.settings,
+				active: false,
+			},
+		};
+		if (user?.settings.active) {
+			return sendToLambda('PUT', modifiedUser)
 				.then(result => {
-					users.splice(users.findIndex(user => user.userId === userId), 1);
+					users.splice(users.indexOf(user), 1, modifiedUser);
 					resolve({result, status: 'OK', message: SUCCESS_UNSUBSCRIBE});
 				})
 				.catch(err => reject(err));

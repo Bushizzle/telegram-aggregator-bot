@@ -10,6 +10,7 @@ const fetch = require('node-fetch');
 
 const {
     ERR_SERVER,
+    ERR_NO_USER,
 } = require('./constants/messages');
 
 const {
@@ -20,6 +21,7 @@ const {
     getDistrictsNames,
     getDistrictId,
     getPriceExpression,
+    allDistrictsKeys,
 } = require('./helpers');
 
 const users = [];
@@ -63,11 +65,16 @@ const broadcastBotSetup = (bot, client) => {
                 reportError(from.id, err);
             });
     } else if (text === '/set') {
-        bot.sendMessage(msg.from.id, 'Настройки', {
-            reply_markup: {
-                inline_keyboard: K_MAIN,
-            }
-        });
+        const user = findUser(users, from.id);
+        if (user?.settings.active) {
+            bot.sendMessage(msg.from.id, 'Настройки', {
+                reply_markup: {
+                    inline_keyboard: K_MAIN,
+                }
+            });
+        } else {
+            bot.sendMessage(from.id, ERR_NO_USER);
+        }
     }
   });
 
@@ -79,23 +86,34 @@ const broadcastBotSetup = (bot, client) => {
 
         const user = findUser(users, user_id);
 
+        if (!user?.settings.active) {
+            bot.sendMessage(user_id, ERR_NO_USER);
+            return
+        }
+
         if (action === 'return_to_main') {
             editMessageText(bot, 'Настройки', chat_id, msg_id, K_MAIN);
         }
         else if (action === 'district') {
-            editMessageText(bot, `Районы: ${getDistrictsNames(user.filters.districts)}`, chat_id, msg_id, mapDistrictsKeyboard(user));
+            editMessageText(bot, `Районы: ${getDistrictsNames(user.settings.districts)}`, chat_id, msg_id, mapDistrictsKeyboard(user.settings.districts));
         }
         else if (action === 'price') {
             editMessageText(bot, 'Цена', chat_id, msg_id, mapPriceKeyboard(user));
         }
         else if (action.includes('setDistrict:')) {
-            const { filters: { districts } } = user;
-            const value = +action.substring('setDistrict:'.length);
+            let { settings: { districts } } = user;
+            let value = action.substring('setDistrict:'.length);
+
+            if (value === 'all') districts = allDistrictsKeys();
+            if (value === 'none') districts = [];
+            else {
+                value = +value;
+                if (districts.includes(value)) districts.splice(districts.indexOf(value), 1);
+                else districts.push(value);
+            }
 
             editUser(users, user_id, { districts }).then(() => {
-                    if (districts.includes(value)) districts.splice(districts.indexOf(value), 1);
-                    else districts.push(value);
-                    editMessageText(bot, `Районы:`, chat_id, msg_id, mapDistrictsKeyboard(user));
+                    editMessageText(bot, `Районы:`, chat_id, msg_id, mapDistrictsKeyboard(districts));
                 })
                 .catch(err => {
                     bot.sendMessage(user_id, ERR_SERVER);
@@ -103,11 +121,11 @@ const broadcastBotSetup = (bot, client) => {
                 });
         }
         else if (action.includes('setPrice:')) {
-            const { filters: { price } } = user;
+            const { settings: { price } } = user;
             const value = +action.substring('setPrice:'.length);
             if (price !== value) {
                 editUser(users, user_id, { price: value }).then(() => {
-                    user.filters.price = value;
+                    user.settings.price = value;
                     editMessageText(bot, `Цена:`, chat_id, msg_id, mapPriceKeyboard(user));
                 })
                     .catch(err => {
@@ -129,8 +147,9 @@ const broadcastBotNotify = (bot, { data, message }) => {
 
     if (districtId && priceValue) {
         const targetUsers = users
-            .filter(user => user.filters.districts.includes(districtId))
-            .filter(user => getPriceExpression(user.filters.price)?.(priceValue));
+            .filter(user => user.settings.active)
+            .filter(user => user.settings.districts.includes(districtId))
+            .filter(user => getPriceExpression(user.settings.price)?.(priceValue));
 
         if (targetUsers.length) {
             targetUsers.forEach(({userId}) => bot.sendMessage(userId, message));
