@@ -33,7 +33,7 @@ const addUser = async (users, userId, name, userName) => {
 					resolve({result, status: 'OK', message: SUCCESS_SUBSCRIBE});
 				})
 				.catch(err => reject(err));
-		} else if (!user.settings.active) {
+		} else if (!user?.settings.active) {
 			const modifiedUser = {
 				...user,
 				settings: {

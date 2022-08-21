@@ -119,7 +119,7 @@ const getForwardInfo = async (client, channelId, messageId, message) => {
 	const data = adapters[channelId](message);
 	const result = adapters.translate(data);
 	// return `${result}Из канала: https://t.me/z/#-${channelId}\nСсылка: https://t.me/c/${channelId}/${messageId}`;
-	return !!Object.keys({}).length && {
+	return !!Object.keys(result).length && {
 		data,
 		message: `${result}Ссылка: https://t.me/c/${channelId}/${messageId}`,
 	};

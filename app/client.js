@@ -39,8 +39,6 @@ const { TELEGRAM_TOKEN, TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_API_SESSION
 
         if (!parsedData) return false;
 
-        console.log(channelId, parsedData.data);
-
         if (parsedData.data.price && parsedData.data.district) {
             broadcastBotNotify(bot, parsedData);
         }
