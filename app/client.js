@@ -24,6 +24,8 @@ const { TELEGRAM_TOKEN, TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_API_SESSION
     onError: (err) => console.log(err),
   });
 
+  if (!TELEGRAM_API_SESSION) console.log(client.session.save());
+
   client.addEventHandler(async (event) => {
     const { className, message } = event;
     if (className === 'UpdateNewChannelMessage') {
