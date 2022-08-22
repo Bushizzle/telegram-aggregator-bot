@@ -10,6 +10,8 @@ const {
 	editUser,
 } = require('./user');
 
+const { GIGARENT_CHANNEL_TBILISI } = require('../constants/channels');
+
 const cutChunks = (sliceSize, array) => {
 	let result = [];
 	let chunkSize = 2;
@@ -121,7 +123,7 @@ const getForwardInfo = async (client, channelId, messageId, message) => {
 	// return `${result}Из канала: https://t.me/z/#-${channelId}\nСсылка: https://t.me/c/${channelId}/${messageId}`;
 	return !!Object.keys(result).length && {
 		data,
-		message: `${result}Ссылка: https://t.me/c/${channelId}/${messageId}`,
+		message: `${result}Ссылка: https://t.me/c/${GIGARENT_CHANNEL_TBILISI}/${messageId}`,
 	};
 }
 
