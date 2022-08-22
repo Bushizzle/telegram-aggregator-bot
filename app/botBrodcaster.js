@@ -11,6 +11,7 @@ const fetch = require('node-fetch');
 const {
     ERR_SERVER,
     ERR_NO_USER,
+    MSG_ABOUT,
 } = require('./constants/messages');
 
 const {
@@ -46,7 +47,9 @@ const broadcastBotSetup = (bot, client) => {
 
     // console.log(chat, from, text);
 
-    if (text === '/start') {
+    if (text === '/help') {
+        bot.sendMessage(from.id, MSG_ABOUT);
+    } else if (text === '/start') {
       addUser(users, from.id, from.first_name, from.username)
           .then(({message}) => {
               bot.sendMessage(from.id, message);
