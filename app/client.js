@@ -5,7 +5,7 @@ const Bot = require('node-telegram-bot-api');
 require('dotenv').config();
 
 const { getForwardInfo } = require('./helpers');
-const { CHANNELS, RENT_TB } = require('./constants/channels');
+const { CHANNELS, RENT_TB, GIGARENT_CHANNEL_TBILISI } = require('./constants/channels');
 const { broadcastBotSetup, broadcastBotNotify } = require('./botBrodcaster');
 
 const { TELEGRAM_TOKEN, TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_API_SESSION } = process.env;
@@ -37,6 +37,16 @@ const { TELEGRAM_TOKEN, TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_API_SESSION
         // console.log(message.peerId.channelId);
         // console.log(message.peerId.channelId.value);
         const channelId = parseInt(message.peerId.channelId.value);
+
+        client.invoke(
+            new Api.messages.ForwardMessages({
+              fromPeer: `-100${channelId}`,
+              id: [message.id],
+              randomId: [BigInt(String(parseInt(Math.random() * 1000000000000)))],
+              toPeer: `-100${GIGARENT_CHANNEL_TBILISI}`,
+            })
+        );
+
         const parsedData = await getForwardInfo(client, channelId, message.id, message.message);
 
         if (!parsedData) return false;
@@ -52,14 +62,6 @@ const { TELEGRAM_TOKEN, TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_API_SESSION
             noWebpage: true,
           })
         );
-        // await client.invoke(
-        //   new Api.messages.ForwardMessages({
-        //     fromPeer: `-100${channelId}`,
-        //     id: [message.id],
-        //     randomId: [BigInt(String(parseInt(Math.random() * 1000000000000)))],
-        //     toPeer: `-100${RENT_TB}`,
-        //   })
-        // );
       }
     }
   });
