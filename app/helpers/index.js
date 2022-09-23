@@ -120,13 +120,13 @@ const getForwardInfo = async (client, channelId, messageId, message) => {
 	// 	})
 	// );
 	// const link = channelInfo?.fullChat?.exportedInvite?.link
-	const data = getMessageData(message, channelId);
+	const { data, config } = getMessageData(message, channelId);
 	const replyTest = dataToText(data);
 
 	return !!Object.keys(data).length && {
 		data,
 		// message: `${result}Ссылка: https://t.me/c/${GIGARENT_CHANNEL_TBILISI}/${messageId}`,
-		message: `${replyTest}Канал: https://t.me/${data.link}\nОбъявление: https://t.me/c/${channelId}/${messageId}`,
+		message: `${replyTest}Канал: https://t.me/${config.link}\nОбъявление: https://t.me/c/${channelId}/${messageId}`,
 	};
 }
 

@@ -35,21 +35,23 @@ const adapterByMarkers = (message, config) => {
 const getMessageData = (message, channelId) => {
 	const config = getConfig(channelId, configs);
 	if (haveExceptions(message, config)) return false;
-	const result = {
+	const data = {
 		...adapterByKeys(message, config),
 		...adapterByMarkers(message, config),
 	}
 	const district = getDistrict(message, DISTRICTS);
-	if (district) result.district = district.name;
+	if (district) data.district = district.name;
 
-	result.link = config.link;
-	return result;
+	return {
+		data,
+		config,
+	};
 };
 
-const dataToText = (result) => {
+const dataToText = (data) => {
 	let text = '';
-	for (let key in result) {
-		text += `${DICTIONARY[key]}: ${result[key]}\n`;
+	for (let key in data) {
+		text += `${DICTIONARY[key]}: ${data[key]}\n`;
 	}
 	return text;
 };
