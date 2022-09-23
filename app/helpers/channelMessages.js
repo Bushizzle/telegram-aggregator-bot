@@ -1,8 +1,14 @@
 const { REGEXP } = require('../constants/regexp');
 
-const removeGarbage = (str) => str
-	.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '')
-	.replace(/[\u200B\u200C\u200D\uFEFF\u2028\u2029\uFE0F]/g, '').trim();
+const removeGarbage = (str, keyPair) => {
+	if (keyPair.key === 'contacts') return str;
+	const value = getValue(str, keyPair.value);
+	return value ?
+		value
+			.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '')
+			.replace(/[\u200B\u200C\u200D\uFEFF\u2028\u2029\uFE0F]/g, '').trim()
+		: '';
+}
 
 const mapStrings = (str, divider) => str.split(divider || '\n');
 
