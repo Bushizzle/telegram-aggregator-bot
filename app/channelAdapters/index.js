@@ -4,6 +4,7 @@ const configs = require('./config');
 const {
 	removeGarbage,
 	mapStrings,
+	getValue,
 	getKeypair,
 	haveExceptions,
 	getDistrict,
@@ -14,7 +15,7 @@ const {
 const adapterByKeys = (message, config) => {
 	return config?.keys?.length ? mapStrings(message).reduce((res, str) => {
 		const keyPair = getKeypair(config, str);
-		if (keyPair) res[keyPair.key] = removeGarbage(str, keyPair.value);
+		if (keyPair) res[keyPair.key] = removeGarbage(getValue(str, keyPair.value), keyPair.key);
 		return res;
 	}, {}) : [];
 };
@@ -26,7 +27,7 @@ const adapterByMarkers = (message, config) => {
 				return str.match(val) && (!exceptions || !haveExceptions(str, exceptions));
 			})
 		);
-		if (marker) res[marker.key] = removeGarbage(str);
+		if (marker) res[marker.key] = removeGarbage(str, marker.key);
 		return res;
 	}, {}) : [];
 };
