@@ -1,7 +1,8 @@
 const { Api } = require('telegram');
-const adapters = require('../channelAdapters');
+const { getMessageData, dataToText } = require('../channelAdapters');
 const { DISTRICTS } = require('../constants/districts');
 const { PRICES } = require('../constants/prices');
+const { CHANNELS } = require('../constants/channels');
 
 const {
 	addUser,
@@ -115,15 +116,17 @@ const collectGroupMessages = async (client, groupId, period) => {
 const getForwardInfo = async (client, channelId, messageId, message) => {
 	// const channelInfo = await client.invoke(
 	// 	new Api.channels.GetFullChannel({
-	// 		channel: "username",
+	// 		channel: channelId, // not working
 	// 	})
 	// );
-	const data = adapters[channelId](message);
-	const result = adapters.translate(data);
-	// return `${result}Из канала: https://t.me/z/#-${channelId}\nСсылка: https://t.me/c/${channelId}/${messageId}`;
-	return !!Object.keys(result).length && {
+	// const link = channelInfo?.fullChat?.exportedInvite?.link
+	const data = getMessageData(message, channelId);
+	const replyTest = dataToText(data);
+
+	return !!Object.keys(data).length && {
 		data,
-		message: `${result}Ссылка: https://t.me/c/${GIGARENT_CHANNEL_TBILISI}/${messageId}`,
+		// message: `${result}Ссылка: https://t.me/c/${GIGARENT_CHANNEL_TBILISI}/${messageId}`,
+		message: `${replyTest}Канал: https://t.me/${data.link}\nОбъявление: https://t.me/c/${channelId}/${messageId}`,
 	};
 }
 

@@ -8,9 +8,10 @@ const { getForwardInfo } = require('./helpers');
 const { CHANNELS, RENT_TB, GIGARENT_CHANNEL_TBILISI } = require('./constants/channels');
 const { broadcastBotSetup, broadcastBotNotify } = require('./botBrodcaster');
 
-const { TELEGRAM_TOKEN, TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_API_SESSION } = process.env;
+const { TELEGRAM_TOKEN, TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_API_SESSION, NODE_ENV } = process.env;
 
 (async () => {
+  if (NODE_ENV === 'development') console.log('Running in dev mode');
   const stringSession = new StringSession(TELEGRAM_API_SESSION);
   const client = new TelegramClient(stringSession, +TELEGRAM_API_ID, TELEGRAM_API_HASH, {
     connectionRetries: 5,
@@ -48,11 +49,12 @@ const { TELEGRAM_TOKEN, TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_API_SESSION
         );
 
         const parsedData = await getForwardInfo(client, channelId, message.id, message.message);
+        console.log(parsedData);
 
         if (!parsedData) return false;
 
         if (parsedData.data.price && parsedData.data.district) {
-            broadcastBotNotify(bot, parsedData);
+            broadcastBotNotify(bot, parsedData, NODE_ENV);
         }
 
         await client.invoke(

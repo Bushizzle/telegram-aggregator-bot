@@ -142,17 +142,23 @@ const broadcastBotSetup = (bot, client) => {
     });
 }
 
-const broadcastBotNotify = (bot, { data, message }) => {
+const broadcastBotNotify = (bot, { data, message }, env) => {
     const districtId = getDistrictId(data.district);
     const priceValue = typeof data.price === 'number'
         ? data.price
         : data.price?.match(/\d{2,6}/)?.[0];
 
     if (districtId && priceValue) {
-        const targetUsers = users
-            .filter(user => user.settings.active)
-            .filter(user => user.settings.districts.includes(districtId))
-            .filter(user => getPriceExpression(user.settings.price)?.(priceValue));
+        const targetUsers = env === 'production'
+            ? users
+                .filter(user => user.settings.active)
+                .filter(user => user.settings.districts.includes(districtId))
+                .filter(user => getPriceExpression(user.settings.price)?.(priceValue))
+            : users
+                .filter(user => +user.userId === 181749991)
+                .filter(user => user.settings.active)
+                .filter(user => user.settings.districts.includes(districtId))
+                .filter(user => getPriceExpression(user.settings.price)?.(priceValue));
 
         if (targetUsers.length) {
             targetUsers.forEach(({userId}) => bot.sendMessage(userId, message));

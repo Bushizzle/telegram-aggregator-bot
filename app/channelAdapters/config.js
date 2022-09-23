@@ -1,9 +1,10 @@
 const { REGEXP } = require('../constants/regexp');
 
-module.exports = [
+const config = [
 	// АРЕНДА ЖИЛЬЯ 🇬🇪 ГРУЗИЯ 1148878384
 	{
 		id: 1148878384,
+		link: 'arenda_ge',
 		keys: [
 			// {
 			// 	key: 'district',
@@ -47,6 +48,7 @@ module.exports = [
 	// Тбилиси Объявления, Недвижимость, Аренда 1377602081
 	{
 		id: 1377602081,
+		link: 'domtb',
 		keys: [
 			{
 				key: 'text',
@@ -81,6 +83,7 @@ module.exports = [
 	// Tbilisi apartment rent 1751740207
 	{
 		id: 1751740207,
+		link: 'Tbilisi_Rental',
 		keys: [
 			{
 				key: 'address',
@@ -122,6 +125,7 @@ module.exports = [
 	// Аренда квартир Тбилиси 1513001857
 	{
 		id: 1513001857,
+		link: 'flatTbilisi',
 		keys: [
 			{
 				key: 'address',
@@ -163,6 +167,7 @@ module.exports = [
 	// 🏡 Тбилиси Аренда покупка недвижимости Квартиры дома 🔑 1170680593
 	{
 		id: 1170680593,
+		link: 'GE4YOU',
 		markers: [
 			{
 				key: 'size',
@@ -193,6 +198,7 @@ module.exports = [
 	// АРЕНДА ТБИЛИСИ🏚 1748218743
 	{
 		id: 1748218743,
+		link: 'arendatbilisikv',
 		markers: [
 			{
 				key: 'size',
@@ -231,6 +237,7 @@ module.exports = [
 	// Тбилиси 🏡 Аренда | Продажа | Недвижимость | Жилье | Квартиры 1356271391
 	{
 		id: 1356271391,
+		link: 'tbilisi_apartments',
 		markers: [
 			{
 				key: 'size',
@@ -255,35 +262,41 @@ module.exports = [
 		],
 		exceptions: [REGEXP.SOLD],
 	},
+	// Channel0 (Dev)
 	{
 		id: 1568042374,
-		keys: [
-			{
-				key: 'text',
-				matches: ['🏣 '],
-			},
-			{
-				key: 'address',
-				matches: ['📍 '],
-			},
-		],
 		markers: [
-			{
-				key: 'price',
-				matches: [REGEXP.PRICE, REGEXP.PRICE_REVERTED],
-			},
 			{
 				key: 'size',
 				matches: [REGEXP.SIZE],
-				exceptions: ['балкон'],
 			},
 			{
 				key: 'floor',
 				matches: [REGEXP.FLOOR],
 			},
 			{
+				key: 'rooms',
+				matches: ['комнаты', 'комната'],
+			},
+			{
+				key: 'bedrooms',
+				matches: [REGEXP.BEDROOMS],
+			},
+			{
 				key: 'balcony',
 				matches: ['балкон'],
+			},
+			{
+				key: 'pets',
+				matches: [REGEXP.PETS],
+			},
+			{
+				key: 'price',
+				matches: [REGEXP.PRICE, REGEXP.PRICE_REVERTED],
+			},
+			{
+				key: 'address',
+				matches: [REGEXP.ADDRESS],
 			},
 		],
 		exceptions: ['батуми', 'кутаиси'],
@@ -301,3 +314,5 @@ module.exports = [
 		exceptions: [],
 	}
 ];
+
+module.exports = config;
