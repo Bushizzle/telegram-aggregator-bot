@@ -3,6 +3,7 @@ const { getMessageData, dataToText } = require('../channelAdapters');
 const { DISTRICTS } = require('../constants/districts');
 const { PRICES } = require('../constants/prices');
 const { CHANNELS } = require('../constants/channels');
+const logger = require('log4js').getLogger('logger');
 
 const {
 	addUser,
@@ -12,6 +13,7 @@ const {
 } = require('./user');
 
 const { GIGARENT_CHANNEL_TBILISI } = require('../constants/channels');
+const log4js = require("log4js");
 
 const cutChunks = (sliceSize, array) => {
 	let result = [];
@@ -25,74 +27,13 @@ const cutChunks = (sliceSize, array) => {
 
 const generateMessageId = (channelId, messageId) => `${channelId}-${messageId}`;
 
-// const message = {
-// 	CONSTRUCTOR_ID: 1656358105,
-// 	SUBCLASS_OF_ID: 2676568142,
-// 	className: 'UpdateNewChannelMessage',
-// 	classType: 'constructor',
-// 	message: {
-// 		CONSTRUCTOR_ID: 940666592,
-// 		SUBCLASS_OF_ID: 2030045667,
-// 		className: 'Message',
-// 		classType: 'constructor',
-// 		out: false,
-// 		mentioned: false,
-// 		mediaUnread: false,
-// 		silent: false,
-// 		post: true,
-// 		fromScheduled: false,
-// 		legacy: false,
-// 		editHide: false,
-// 		ttlPeriod: null,
-// 		id: 8953,
-// 		fromId: null,
-// 		peerId: {
-// 			CONSTRUCTOR_ID: 2728736542,
-// 			SUBCLASS_OF_ID: 47470215,
-// 			className: 'PeerChannel',
-// 			classType: 'constructor',
-// 			channelId: [Integer]
-// 		},
-// 		fwdFrom: null,
-// 		viaBotId: null,
-// 		replyTo: null,
-// 		date: 1654984351,
-// 		message: '',
-// 		media: {
-// 			CONSTRUCTOR_ID: 1766936791,
-// 			SUBCLASS_OF_ID: 1198308914,
-// 			className: 'MessageMediaPhoto',
-// 			classType: 'constructor',
-// 			flags: 1,
-// 			photo: [Object],
-// 			ttlSeconds: null
-// 		},
-// 		replyMarkup: null,
-// 		entities: null,
-// 		views: 1,
-// 		forwards: 0,
-// 		replies: null,
-// 		editDate: null,
-// 		pinned: false,
-// 		postAuthor: null,
-// 		groupedId: { value: 13239874810309226n },
-// 		restrictionReason: null,
-// 		action: undefined,
-// 		noforwards: false,
-// 		reactions: null,
-// 		flags: 148992
-// 	},
-// 	pts: 10427,
-// 	ptsCount: 1
-// }
-
 function getMessagesInPeriod(messages, period) {
 	const now = Date.now();
 	return messages.filter(({ date }) => now - date * 1000 < period);
 }
 
 const collectGroupMessages = async (client, groupId, period) => {
-	console.log('start collecting');
+	logger.info('start collecting');
 	let offset = 0,
 		finished = false;
 	const resultData = [];
@@ -106,7 +47,7 @@ const collectGroupMessages = async (client, groupId, period) => {
 		);
 		const messages = getMessagesInPeriod(result.messages, period);
 		resultData.push(...messages);
-		console.log(`iteration ${offset} done with ${messages.length} messages`);
+		logger.info(`iteration ${offset} done with ${messages.length} messages`);
 		offset += 1;
 		if (messages.length < 100) finished = true;
 	} while (!finished);
@@ -121,9 +62,11 @@ const getForwardInfo = async (client, channelId, messageId, message) => {
 	// );
 	// const link = channelInfo?.fullChat?.exportedInvite?.link
 	const { data, config } = getMessageData(message, channelId);
+	logger.info(data);
+	logger.info(config);
 	const replyTest = dataToText(data);
 
-	return !!Object.keys(data).length && {
+	return data && {
 		data,
 		// message: `${result}Ссылка: https://t.me/c/${GIGARENT_CHANNEL_TBILISI}/${messageId}`,
 		message: `${replyTest}Канал: https://t.me/${config.link}\nОбъявление: https://t.me/c/${channelId}/${messageId}`,
@@ -131,7 +74,7 @@ const getForwardInfo = async (client, channelId, messageId, message) => {
 }
 
 const reportError = (id, msg) => {
-	console.log(id, msg);
+	logger.error(id, msg);
 };
 
 const getDistrictsNames = districts => districts.map(id => DISTRICTS.find(district => district.key === id)?.name);

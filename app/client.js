@@ -1,3 +1,20 @@
+const log4js = require('log4js');
+log4js.configure({
+    appenders: {
+        logger: {
+            type: 'file',
+            filename: 'logfile.log',
+        },
+    },
+    categories: {
+        default: {
+            appenders: ['logger'],
+            level: 'all',
+        },
+    },
+});
+const logger = log4js.getLogger('logger');
+
 const { Api, TelegramClient } = require('telegram');
 const { StringSession } = require('telegram/sessions');
 const input = require('input');
@@ -49,7 +66,7 @@ const { TELEGRAM_TOKEN, TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_API_SESSION
         );
 
         const parsedData = await getForwardInfo(client, channelId, message.id, message.message);
-        console.log(parsedData);
+        logger.info(parsedData);
 
         if (!parsedData) return false;
 

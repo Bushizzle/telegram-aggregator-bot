@@ -17,7 +17,7 @@ const adapterByKeys = (message, config) => {
 		const keyPair = getKeypair(config, str);
 		if (keyPair) res[keyPair.key] = removeGarbage(getValue(str, keyPair.value), keyPair.key);
 		return res;
-	}, {}) : [];
+	}, {}) : {};
 };
 
 const adapterByMarkers = (message, config) => {
@@ -29,7 +29,7 @@ const adapterByMarkers = (message, config) => {
 		);
 		if (marker) res[marker.key] = removeGarbage(str, marker.key);
 		return res;
-	}, {}) : [];
+	}, {}) : {};
 };
 
 const getMessageData = (message, channelId) => {
