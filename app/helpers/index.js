@@ -11,9 +11,6 @@ const {
 	editUserSettings,
 } = require('./user');
 
-const { GIGARENT_CHANNEL_TBILISI } = require('../constants/channels');
-const log4js = require("log4js");
-
 const cutChunks = (sliceSize, array) => {
 	let result = [];
 	let chunkSize = 2;

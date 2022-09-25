@@ -286,6 +286,41 @@ const config = [
 		],
 		exceptions: [REGEXP.SOLD],
 	},
+	// Тбилиси аренда от собственников
+	{
+		id: 1541388090,
+		link: 'owners_tbilisi',
+		keys: [
+			{
+				key: 'address',
+				matches: ['Адрес:'],
+			},
+			{
+				key: 'price',
+				matches: ['Цена:'],
+			},
+			{
+				key: 'size',
+				matches: ['Площадь:'],
+			},
+			{
+				key: 'floor',
+				matches: ['Этаж:'],
+			},
+			{
+				key: 'rooms',
+				matches: ['Комнат:'],
+			},
+			{
+				key: 'bedrooms',
+				matches: ['Спален:'],
+			},
+			{
+				key: 'geo',
+				matches: [REGEXP.GEO],
+			},
+		]
+	},
 	// Channel0 (Dev)
 	{
 		id: 1568042374,
@@ -329,53 +364,6 @@ const config = [
 		],
 		exceptions: ['батуми', 'кутаиси'],
 	},
-	// Тбилиси аренда от собственников
-	{
-		id: 1541388090,
-		link: 'owners_tbilisi',
-		keys: [
-			{
-				key: 'address',
-				matches: ['Адрес:'],
-			},
-			{
-				key: 'price',
-				matches: ['Цена:'],
-			},
-			{
-				key: 'size',
-				matches: ['Площадь:'],
-			},
-			{
-				key: 'floor',
-				matches: ['Этаж:'],
-			},
-			{
-				key: 'rooms',
-				matches: ['Комнат:'],
-			},
-			{
-				key: 'bedrooms',
-				matches: ['Спален:'],
-			},
-			{
-				key: 'geo',
-				matches: [REGEXP.GEO],
-			},
-		]
-	},
-	{
-		id: 0,
-		keys: {},
-		markers: [
-			{
-				key: '',
-				matches: [''],
-				exceptions: [],
-			},
-		],
-		exceptions: [],
-	}
 ];
 
 module.exports = config;
