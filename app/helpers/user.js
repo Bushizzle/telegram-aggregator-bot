@@ -49,7 +49,7 @@ const addUser = async (users, userId, name, userName) => {
 					...user.notifications,
 					welcome: true,
 				} : {
-					welcome: true,
+					welcome: false,
 					config: false,
 				}
 			};
@@ -78,8 +78,8 @@ const editUserSettings = async (users, userId, settings) => {
 					...user.notifications,
 					config: true,
 				} : {
-					config: true,
 					welcome: false,
+					config: true,
 				},
 			};
 			return sendToLambda('PUT', modifiedUser)
