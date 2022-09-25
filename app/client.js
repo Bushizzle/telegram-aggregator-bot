@@ -70,7 +70,7 @@ const { TELEGRAM_TOKEN, TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_API_SESSION
 
         if (!parsedData) return false;
 
-        if (parsedData.data.price && parsedData.data.district) {
+        if (parsedData.data.price && (parsedData.data.district || parsedData.data.address)) {
             broadcastBotNotify(bot, parsedData, NODE_ENV);
         }
 

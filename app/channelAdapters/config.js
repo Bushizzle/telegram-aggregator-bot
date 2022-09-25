@@ -301,6 +301,37 @@ const config = [
 		],
 		exceptions: ['батуми', 'кутаиси'],
 	},
+	// Тбилиси аренда от собственников
+	{
+		id: 1541388090,
+		link: 'owners_tbilisi',
+		keys: [
+			{
+				key: 'address',
+				matches: ['Адрес:'],
+			},
+			{
+				key: 'price',
+				matches: ['Цена:'],
+			},
+			{
+				key: 'size',
+				matches: ['Площадь:'],
+			},
+			{
+				key: 'floor',
+				matches: ['Этаж:'],
+			},
+			{
+				key: 'rooms',
+				matches: ['Комнат:'],
+			},
+			{
+				key: 'bedrooms',
+				matches: ['Спален:'],
+			},
+		]
+	},
 	{
 		id: 0,
 		keys: {},
