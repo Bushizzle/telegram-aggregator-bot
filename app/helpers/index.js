@@ -2,14 +2,13 @@ const { Api } = require('telegram');
 const { getMessageData, dataToText } = require('../channelAdapters');
 const { DISTRICTS } = require('../constants/districts');
 const { PRICES } = require('../constants/prices');
-const { CHANNELS } = require('../constants/channels');
 const logger = require('log4js').getLogger('logger');
 
 const {
 	addUser,
 	removeUser,
 	findUser,
-	editUser,
+	editUserSettings,
 } = require('./user');
 
 const { GIGARENT_CHANNEL_TBILISI } = require('../constants/channels');
@@ -89,8 +88,6 @@ const getPriceExpression = (priceKey) => {
 	return priceData?.expression || null;
 }
 
-const allDistrictsKeys = () => DISTRICTS.map(d => d.key);
-
 module.exports = {
 	cutChunks,
 	getDistrictId,
@@ -102,8 +99,7 @@ module.exports = {
 	addUser,
 	removeUser,
 	findUser,
-	editUser,
+	editUserSettings,
 	getDistrictsNames,
 	getPriceExpression,
-	allDistrictsKeys,
 };

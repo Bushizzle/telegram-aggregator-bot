@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const { USERS_LAMBDA } = require('../constants');
 const { SUCCESS_SUBSCRIBE, ERR_DUPLICATE, SUCCESS_UNSUBSCRIBE, ERR_NOT_SUBSCRIBED, ERR_NO_USER } = require('../constants/messages');
+const { ALL_DISTRICTS_KEYS } = require('../constants/districts');
 
 const findUser = (users, id) => users.find(({userId}) => userId === id);
 
@@ -10,9 +11,13 @@ const newUser = (userId, name, userName) => ({
 	userName,
 	settings: {
 		price: 6,
-		districts: [],
+		districts: ALL_DISTRICTS_KEYS,
 		active: true,
 	},
+	notifications: {
+		welcome: true,
+		config: false,
+	}
 });
 
 const sendToLambda = (method, data) => fetch(USERS_LAMBDA, {
@@ -30,7 +35,7 @@ const addUser = async (users, userId, name, userName) => {
 			return sendToLambda('POST', createdUser)
 				.then(result => {
 					users.push(createdUser);
-					resolve({result, status: 'OK', message: SUCCESS_SUBSCRIBE});
+					resolve({result, status: 'OK', message: SUCCESS_SUBSCRIBE, welcomed: false});
 				})
 				.catch(err => reject(err));
 		} else if (!user?.settings.active) {
@@ -40,19 +45,26 @@ const addUser = async (users, userId, name, userName) => {
 					...user.settings,
 					active: true,
 				},
+				notifications: user?.notifications ? {
+					...user.notifications,
+					welcome: true,
+				} : {
+					welcome: true,
+					config: false,
+				}
 			};
 			sendToLambda('PUT', modifiedUser)
 				.then(result => {
 					users.splice(users.indexOf(user), 1, modifiedUser);
-					resolve({result, status: 'OK', message: SUCCESS_SUBSCRIBE});
+					resolve({result, status: 'OK', message: SUCCESS_SUBSCRIBE, welcomed: user?.notifications?.welcome});
 				})
 		} else {
-			resolve({status: 'ERR', message: ERR_DUPLICATE});
+			resolve({status: 'ERR', message: ERR_DUPLICATE, welcomed: true});
 		}
 	});
 }
 
-const editUser = async (users, userId, settings) => {
+const editUserSettings = async (users, userId, settings) => {
 	return new Promise((resolve, reject) => {
 		const user = findUser(users, userId);
 		if (user?.settings.active) {
@@ -61,6 +73,13 @@ const editUser = async (users, userId, settings) => {
 				settings: {
 					...user.settings,
 					...settings,
+				},
+				notifications: user?.notifications ? {
+					...user.notifications,
+					config: true,
+				} : {
+					config: true,
+					welcome: false,
 				},
 			};
 			return sendToLambda('PUT', modifiedUser)
@@ -101,6 +120,6 @@ const removeUser = async (users, userId) => {
 module.exports = {
 	findUser,
 	addUser,
-	editUser,
+	editUserSettings,
 	removeUser,
 };

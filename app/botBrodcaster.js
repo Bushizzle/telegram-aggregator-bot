@@ -1,8 +1,6 @@
 const { USERS_LAMBDA } = require('./constants');
 const {
     K_MAIN,
-    K_DISTRICT,
-    K_PRICE,
     mapDistrictsKeyboard,
     mapPriceKeyboard,
 } = require('./constants/keyboadrs');
@@ -14,16 +12,19 @@ const {
     MSG_ABOUT,
 } = require('./constants/messages');
 
+const { ALL_DISTRICTS_KEYS } = require('./constants/districts');
+
 const {
     addUser,
-    editUser,
+    editUserSettings,
     removeUser,
     findUser,
     getDistrictsNames,
     getDistrictId,
     getPriceExpression,
-    allDistrictsKeys,
 } = require('./helpers');
+
+const { notifyWelcome, notifyConfig } = require('./helpers/notifications');
 
 const users = [];
 
@@ -51,7 +52,8 @@ const broadcastBotSetup = (bot, client) => {
         bot.sendMessage(from.id, MSG_ABOUT);
     } else if (text === '/start') {
       addUser(users, from.id, from.first_name, from.username)
-          .then(({message}) => {
+          .then(({message, welcomed}) => {
+              if (!welcomed) notifyWelcome(from.id, bot);
               bot.sendMessage(from.id, message);
           })
           .catch(err => {
@@ -70,6 +72,7 @@ const broadcastBotSetup = (bot, client) => {
     } else if (text === '/set') {
         const user = findUser(users, from.id);
         if (user?.settings.active) {
+            if (!user?.notifications?.config) notifyConfig(from.id, bot);
             bot.sendMessage(msg.from.id, 'Настройки', {
                 reply_markup: {
                     inline_keyboard: K_MAIN,
@@ -107,7 +110,7 @@ const broadcastBotSetup = (bot, client) => {
             let { settings: { districts } } = user;
             let value = action.substring('setDistrict:'.length);
 
-            if (value === 'all') districts = allDistrictsKeys();
+            if (value === 'all') districts = ALL_DISTRICTS_KEYS;
             if (value === 'none') districts = [];
             else {
                 value = +value;
@@ -115,7 +118,7 @@ const broadcastBotSetup = (bot, client) => {
                 else districts.push(value);
             }
 
-            editUser(users, user_id, { districts }).then(() => {
+            editUserSettings(users, user_id, { districts }).then(() => {
                     editMessageText(bot, `Районы:`, chat_id, msg_id, mapDistrictsKeyboard(districts));
                 })
                 .catch(err => {
@@ -127,7 +130,7 @@ const broadcastBotSetup = (bot, client) => {
             const { settings: { price } } = user;
             const value = +action.substring('setPrice:'.length);
             if (price !== value) {
-                editUser(users, user_id, { price: value }).then(() => {
+                editUserSettings(users, user_id, { price: value }).then(() => {
                     user.settings.price = value;
                     editMessageText(bot, `Цена:`, chat_id, msg_id, mapPriceKeyboard(user));
                 })

@@ -91,6 +91,8 @@ const DISTRICTS = [
 	},
 ];
 
+const ALL_DISTRICTS_KEYS = DISTRICTS.map(d => d.key);
+
 const DICTIONARY = {
 	district: 'Район',
 	text: 'Описание',
@@ -111,4 +113,5 @@ const DICTIONARY = {
 module.exports = {
 	DISTRICTS,
 	DICTIONARY,
+	ALL_DISTRICTS_KEYS,
 };
