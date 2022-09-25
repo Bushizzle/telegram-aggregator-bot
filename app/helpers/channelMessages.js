@@ -28,7 +28,13 @@ const getDistrict = (message, districts) => districts.find(d =>
 const getConfig = (id, configs) => configs.find(conf => conf.id === id);
 
 const isDistrict = (str, districts) =>
-	districts.find(el => el.values.some(val => str.trim().toLowerCase() === val.trim().toLowerCase()))
+	districts.find(el => el.values.some(val => str.trim().toLowerCase() === val.trim().toLowerCase()));
+
+const sortObjectKeys = (data) => Object.keys(data)
+	.sort()
+	.reduce((acc, key) => ({
+		...acc, [key]: data[key],
+	}), {});
 
 module.exports = {
 	removeGarbage,
@@ -39,4 +45,5 @@ module.exports = {
 	getDistrict,
 	getConfig,
 	isDistrict,
+	sortObjectKeys,
 };

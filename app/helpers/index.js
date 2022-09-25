@@ -24,12 +24,6 @@ const cutChunks = (sliceSize, array) => {
 	return result;
 }
 
-const sortObjectKeys = (data) => Object.keys(data)
-	.sort()
-	.reduce((acc, key) => ({
-		...acc, [key]: data[key],
-	}), {});
-
 const generateMessageId = (channelId, messageId) => `${channelId}-${messageId}`;
 
 function getMessagesInPeriod(messages, period) {
@@ -107,5 +101,4 @@ module.exports = {
 	editUserSettings,
 	getDistrictsNames,
 	getPriceExpression,
-	sortObjectKeys,
 };

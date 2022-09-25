@@ -10,9 +10,8 @@ const {
 	getDistrict,
 	getConfig,
 	isDistrict,
+	sortObjectKeys,
 } = require('../helpers/channelMessages');
-
-const { sortObjectKeys } = require('../helpers');
 
 const adapterByKeys = (message, config) => {
 	return config?.keys?.length ? mapStrings(message).reduce((res, str) => {
