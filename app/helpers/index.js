@@ -24,6 +24,12 @@ const cutChunks = (sliceSize, array) => {
 	return result;
 }
 
+const sortObjectKeys = (data) => Object.keys(data)
+	.sort()
+	.reduce((acc, key) => ({
+		...acc, [key]: data[key],
+	}), {});
+
 const generateMessageId = (channelId, messageId) => `${channelId}-${messageId}`;
 
 function getMessagesInPeriod(messages, period) {
@@ -62,7 +68,6 @@ const getForwardInfo = async (client, channelId, messageId, message) => {
 	// const link = channelInfo?.fullChat?.exportedInvite?.link
 	const { data, config } = getMessageData(message, channelId);
 	logger.info(data);
-	logger.info(config);
 	const replyTest = dataToText(data);
 
 	return data && {
@@ -102,4 +107,5 @@ module.exports = {
 	editUserSettings,
 	getDistrictsNames,
 	getPriceExpression,
+	sortObjectKeys,
 };

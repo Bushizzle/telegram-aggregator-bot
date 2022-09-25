@@ -77,6 +77,10 @@ const config = [
 				key: 'balcony',
 				matches: ['балкон'],
 			},
+			{
+				key: 'geo',
+				matches: [REGEXP.GEO],
+			},
 		],
 		exceptions: ['батуми', 'кутаиси'],
 	},
@@ -118,6 +122,10 @@ const config = [
 			{
 				key: 'price',
 				matches: [REGEXP.PRICE, REGEXP.PRICE_REVERTED],
+			},
+			{
+				key: 'geo',
+				matches: [REGEXP.GEO],
 			},
 		],
 		exceptions: ['батуми', 'кутаиси'],
@@ -161,6 +169,10 @@ const config = [
 				key: 'price',
 				matches: [REGEXP.PRICE, REGEXP.PRICE_REVERTED],
 			},
+			{
+				key: 'geo',
+				matches: [REGEXP.GEO],
+			},
 		],
 		exceptions: ['батуми', 'кутаиси'],
 	},
@@ -192,6 +204,10 @@ const config = [
 			{
 				key: 'price',
 				matches: [REGEXP.PRICE, REGEXP.PRICE_REVERTED],
+			},
+			{
+				key: 'geo',
+				matches: [REGEXP.GEO],
 			},
 		],
 	},
@@ -232,6 +248,10 @@ const config = [
 				key: 'address',
 				matches: [REGEXP.ADDRESS],
 			},
+			{
+				key: 'geo',
+				matches: [REGEXP.GEO],
+			},
 		],
 	},
 	// Тбилиси 🏡 Аренда | Продажа | Недвижимость | Жилье | Квартиры 1356271391
@@ -258,7 +278,11 @@ const config = [
 			{
 				key: 'address',
 				matches: [REGEXP.ADDRESS],
-			}
+			},
+			{
+				key: 'geo',
+				matches: [REGEXP.GEO],
+			},
 		],
 		exceptions: [REGEXP.SOLD],
 	},
@@ -298,6 +322,10 @@ const config = [
 				key: 'address',
 				matches: [REGEXP.ADDRESS],
 			},
+			{
+				key: 'geo',
+				matches: [REGEXP.GEO],
+			},
 		],
 		exceptions: ['батуми', 'кутаиси'],
 	},
@@ -329,6 +357,10 @@ const config = [
 			{
 				key: 'bedrooms',
 				matches: ['Спален:'],
+			},
+			{
+				key: 'geo',
+				matches: [REGEXP.GEO],
 			},
 		]
 	},

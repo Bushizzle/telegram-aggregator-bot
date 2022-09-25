@@ -12,6 +12,8 @@ const {
 	isDistrict,
 } = require('../helpers/channelMessages');
 
+const { sortObjectKeys } = require('../helpers');
+
 const adapterByKeys = (message, config) => {
 	return config?.keys?.length ? mapStrings(message).reduce((res, str) => {
 		const keyPair = getKeypair(config, str);
@@ -43,7 +45,7 @@ const getMessageData = (message, channelId) => {
 	if (district) data.district = district.name;
 
 	return {
-		data,
+		data: sortObjectKeys(data),
 		config,
 	};
 };
