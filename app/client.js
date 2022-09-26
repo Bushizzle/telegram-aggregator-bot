@@ -71,7 +71,7 @@ const {
 
         if (!parsedData) return false;
 
-        if (parsedData.data.price && (parsedData.data.district || parsedData.data.address)) {
+        if (parsedData.data.price && parsedData.data.district) {
           broadcastBotNotify(bot, parsedData, NODE_ENV);
         }
 
