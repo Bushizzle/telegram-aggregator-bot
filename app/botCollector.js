@@ -1,6 +1,6 @@
+const fetch = require('node-fetch');
 const { collectGroupMessages, generateMessageId } = require('./helpers');
 const { TIME_WEEK } = require('./constants');
-const fetch = require('node-fetch');
 
 const { DYNAMO_API } = process.env;
 
@@ -23,13 +23,16 @@ const runBot = (bot, client) => {
           }
         ));
 
-      const response = await fetch(DYNAMO_API, {method: 'POST', body: JSON.stringify({
-          tableName: "Rent",
+      const response = await fetch(DYNAMO_API, {
+        method: 'POST',
+        body: JSON.stringify({
+          tableName: 'Rent',
           items: messagesToSave,
-        })});
+        }),
+      });
       const dada = await response.json();
 
-      bot.sendMessage(from.id, `Сохранение закончено`);
+      bot.sendMessage(from.id, 'Сохранение закончено');
 
       console.log(dada);
     }
@@ -47,8 +50,8 @@ const runBot = (bot, client) => {
     // bot.sendMessage(from.id, text);
     // console.log(from);
   });
-}
+};
 
 module.exports = {
   runBot,
-}
+};

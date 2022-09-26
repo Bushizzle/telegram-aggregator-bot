@@ -7,6 +7,6 @@ const notifyWelcome = (userId, bot) => notifyUser(userId, bot, WELCOME_START);
 const notifyConfig = (userId, bot) => notifyUser(userId, bot, WELCOME_CONFIGURATION);
 
 module.exports = {
-	notifyWelcome,
-	notifyConfig,
-}
+  notifyWelcome,
+  notifyConfig,
+};

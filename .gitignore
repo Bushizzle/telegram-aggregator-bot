@@ -6,3 +6,4 @@ node_modules
 */**/crash.log
 .DS_Store
 */**/.DS_Store
+app/logfile.log

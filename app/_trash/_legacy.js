@@ -1,6 +1,7 @@
 const {getConfig, haveExceptions, getDistrict, mapStrings, isDistrict} = require("../helpers/channelMessages");
-const configs = require("./config");
-const {DISTRICTS, DICTIONARY} = require("../constants/districts");
+const configs = require("../channelAdapters/config");
+const { DISTRICTS } = require("../constants/districts");
+const { DICTIONARY } = require("../constants/translations");
 const adapters = {
 	// АРЕНДА ЖИЛЬЯ 🇬🇪 ГРУЗИЯ 1148878384
 	1148878384: (message) => {
