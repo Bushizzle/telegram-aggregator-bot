@@ -10,12 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^16.0.1",
+    "dotenv": "16.0.1",
     "forever-monitor": "3.0.3",
-    "input": "^1.0.1",
+    "input": "1.0.1",
     "log4js": "6.6.1",
-    "mongodb": "^3.5.7",
-    "mongoose": "^5.9.13",
     "node-fetch": "2.0.0",
     "node-telegram-bot-api": "^0.57.0",
     "telegram": "^2.8.4"
