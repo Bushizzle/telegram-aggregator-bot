@@ -1,4 +1,4 @@
-const { REGEXP } = require('../constants/regexp');
+const { REGEXP } = require('../constants');
 
 const removeGarbage = (str, key) => {
   if (key === 'contacts') return str;

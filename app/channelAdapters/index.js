@@ -1,4 +1,4 @@
-const { DISTRICTS } = require('../constants/districts');
+const { DISTRICTS } = require('../constants/keys');
 const { DICTIONARY } = require('../constants/translations');
 const configs = require('./config');
 

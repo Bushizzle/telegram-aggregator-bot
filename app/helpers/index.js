@@ -1,8 +1,7 @@
 const { Api } = require('telegram');
-const { getMessageData, dataToText } = require('../channelAdapters');
-const { DISTRICTS } = require('../constants/districts');
-const { PRICES } = require('../constants/prices');
 const logger = require('log4js').getLogger('logger');
+const { getMessageData, dataToText } = require('../channelAdapters');
+const { PRICES, DISTRICTS } = require('../constants');
 
 const {
   addUser,

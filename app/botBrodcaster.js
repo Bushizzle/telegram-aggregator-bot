@@ -9,9 +9,8 @@ const {
   ERR_SERVER,
   ERR_NO_USER,
   MSG_ABOUT,
-} = require('./constants/messages');
-
-const { ALL_DISTRICTS_KEYS } = require('./constants/districts');
+  ALL_DISTRICTS_KEYS,
+} = require('./constants');
 
 const {
   addUser,
@@ -37,18 +36,18 @@ const users = [];
 fetch(USERS_LAMBDA)
   .then((res) => res.json())
   .then(({ Items }) => users.push(...Items))
-  .then((_) => console.log(users));
+  .then(() => console.log(users));
 
-const editMessageText = (bot, reply_text, chat_id, message_id, inline_keyboard) => bot.editMessageText(reply_text, {
-  chat_id,
-  message_id,
+const editMessageText = (bot, replyText, chatId, messageId, inlineKeyboard) => bot.editMessageText(replyText, {
+  chat_id: chatId,
+  message_id: messageId,
   parse_mode: 'HTML',
   reply_markup: {
-    inline_keyboard,
+    inline_keyboard: inlineKeyboard,
   },
 });
 
-const broadcastBotSetup = (bot, client) => {
+const broadcastBotSetup = (bot) => {
   bot.on('message', async (msg) => {
     const { chat, from, text } = msg;
 

@@ -1,11 +1,63 @@
-const TIME_HOUR = 1000 * 60 * 60;
-const TIME_DAY = TIME_HOUR * 24;
-const TIME_WEEK = TIME_DAY * 7;
-const TIME_MONTH = TIME_DAY * 30;
+const {
+  CHANNELS,
+  RENT_TB,
+  GIGARENT_CHANNEL_TBILISI,
+} = require('./channels');
+
+const {
+  DISTRICTS,
+  ALL_DISTRICTS_KEYS,
+} = require('./districts');
+
+const {
+  PRICES,
+  KEY_BACK,
+  KEYBOARD_MAIN,
+} = require('./keys');
+
+const {
+  ERR_SERVER,
+  ERR_DUPLICATE,
+  ERR_NOT_SUBSCRIBED,
+  SUCCESS_SUBSCRIBE,
+  SUCCESS_UNSUBSCRIBE,
+  ERR_NO_USER,
+  MSG_ABOUT,
+  WELCOME_START,
+  WELCOME_CONFIGURATION,
+} = require('./messages');
+
+const {
+  REGEXP,
+} = require('./regexp');
+
+const {
+  DICTIONARY,
+} = require('./translations');
 
 module.exports = {
-  TIME_HOUR,
-  TIME_DAY,
-  TIME_WEEK,
-  TIME_MONTH,
+  CHANNELS,
+  RENT_TB,
+  GIGARENT_CHANNEL_TBILISI,
+
+  DISTRICTS,
+  ALL_DISTRICTS_KEYS,
+
+  PRICES,
+  KEY_BACK,
+  KEYBOARD_MAIN,
+
+  ERR_SERVER,
+  ERR_DUPLICATE,
+  ERR_NOT_SUBSCRIBED,
+  SUCCESS_SUBSCRIBE,
+  SUCCESS_UNSUBSCRIBE,
+  ERR_NO_USER,
+  MSG_ABOUT,
+  WELCOME_START,
+  WELCOME_CONFIGURATION,
+
+  REGEXP,
+
+  DICTIONARY,
 };

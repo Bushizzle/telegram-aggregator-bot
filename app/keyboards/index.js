@@ -1,7 +1,10 @@
 const { cutChunks } = require('../helpers');
-const { DISTRICTS } = require('../constants/districts');
-const { PRICES } = require('../constants/prices');
-const { KEYBOARD_MAIN, KEY_BACK } = require('../constants/keyboadrs');
+const {
+  DISTRICTS,
+  PRICES,
+  KEYBOARD_MAIN,
+  KEY_BACK,
+} = require('../constants');
 
 const keyboardMain = () => KEYBOARD_MAIN;
 

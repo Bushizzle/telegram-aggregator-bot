@@ -14,13 +14,8 @@ const CHANNELS = [
   CHANNEL_0,
 ];
 
-const CHATS = [
-  1422799510,
-];
-
 module.exports = {
   CHANNELS,
-  CHATS,
   RENT_TB,
   GIGARENT_CHANNEL_TBILISI,
 };

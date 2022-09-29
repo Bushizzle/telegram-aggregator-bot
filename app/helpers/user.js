@@ -1,8 +1,12 @@
 const fetch = require('node-fetch');
 const {
-  SUCCESS_SUBSCRIBE, ERR_DUPLICATE, SUCCESS_UNSUBSCRIBE, ERR_NOT_SUBSCRIBED, ERR_NO_USER,
-} = require('../constants/messages');
-const { ALL_DISTRICTS_KEYS } = require('../constants/districts');
+  SUCCESS_SUBSCRIBE,
+  ERR_DUPLICATE,
+  SUCCESS_UNSUBSCRIBE,
+  ERR_NOT_SUBSCRIBED,
+  ERR_NO_USER,
+  ALL_DISTRICTS_KEYS,
+} = require('../constants');
 
 const { USERS_LAMBDA } = process.env;
 

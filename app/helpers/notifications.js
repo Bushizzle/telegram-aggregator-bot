@@ -1,4 +1,4 @@
-const { WELCOME_CONFIGURATION, WELCOME_START } = require('../constants/messages');
+const { WELCOME_CONFIGURATION, WELCOME_START } = require('../constants');
 
 const notifyUser = (userID, bot, message) => bot.sendMessage(userID, message);
 

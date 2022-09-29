@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const { collectGroupMessages, generateMessageId } = require('./helpers');
+const { collectGroupMessages, generateMessageId } = require('../helpers');
 const { TIME_WEEK } = require('./constants');
 
 const { DYNAMO_API } = process.env;
