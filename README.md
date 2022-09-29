@@ -9,6 +9,3 @@ TELEGRAM_API_ID=
 TELEGRAM_API_HASH=
 TELEGRAM_API_SESSION=
 USERS_LAMBDA= API url
-
-# Unused files
-Ignore _botCollector and _trash folders
