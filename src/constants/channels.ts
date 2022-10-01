@@ -1,6 +1,4 @@
 const CHANNEL_0 = 1568042374;
-export const RENT_TB = 1588565155;
-export const GIGARENT_CHANNEL_TBILISI = 1738261029;
 
 export const CHANNELS = [
   1148878384,

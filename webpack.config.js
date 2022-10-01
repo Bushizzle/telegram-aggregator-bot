@@ -7,21 +7,21 @@ module.exports = () => ({
   externalsPresets: {
     node: true, // ignore built-in modules like path, fs, etc.
   },
+  entry: './src/index.ts',
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.ts?$/,
         use: 'ts-loader',
-        exclude: /node_modules|dist/,
+        exclude: /node_modules/,
       },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts'],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'index.ts',
-    libraryTarget: 'commonjs2',
+    filename: 'index.js',
   },
 });

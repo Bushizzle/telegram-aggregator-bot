@@ -5,8 +5,7 @@
     "sourceMap": true,
     "strict": true,
     "lib": [
-      "es2021",
-      "webworker"
+      "es2021"
     ]
   },
   "exclude": [

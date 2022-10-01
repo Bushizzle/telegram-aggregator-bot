@@ -1,12 +1,11 @@
-import * as log4js from 'log4js';
 import { TelegramClient } from 'telegram';
 import { getMessageData, dataToText } from '../channelAdapters';
 import { PRICES, DISTRICTS } from '../constants';
 import type { TDistrict } from '../types';
 
 export { addUser, removeUser, findUser, editUserSettings, loadAllUsers } from './user';
-
-const logger = log4js.getLogger('logger');
+export { Reporter } from './reporter';
+import { Reporter } from './reporter';
 
 export const cutChunks = (sliceSize: number, array: any[]): any[] => {
   const result = [];
@@ -23,17 +22,13 @@ export const getForwardInfo = async (client: TelegramClient, channelId: number, 
   if (!messageData?.data) return undefined;
 
   const { data, config } = messageData;
-  logger.info(data);
+  Reporter.log(data);
   const replyTest = dataToText(data);
 
   return {
     data,
     message: `${replyTest}Канал: https://t.me/${config.link}\nОбъявление: https://t.me/c/${channelId}/${messageId}`,
   };
-};
-
-export const reportError = (id: number, msg: string) => {
-  logger.error(id, msg);
 };
 
 export const getDistrictsNames = (districts: TDistrict[]) =>

@@ -10,12 +10,7 @@ import { notifyWelcome, notifyConfig } from './helpers/notifications';
 import type { TAptData, TUser } from './types';
 import type { TLambdaResponse } from './types';
 
-const reportError = (id: number, msg: string) => {
-  // eslint-disable-next-line no-console
-  console.log('[ERR] Custom error:');
-  // eslint-disable-next-line no-console
-  console.log(id, msg);
-};
+import { Reporter } from './helpers';
 
 const editMessageText = (
   bot: TelegramBot,
@@ -46,35 +41,35 @@ export const broadcastBotSetup = (bot: TelegramBot, users: TUser[], usersLambda:
       case '/start':
         void addUser(users, from.id, from.first_name, from.username, usersLambda)
           .then(({ message, welcomed }: TLambdaResponse) => {
-            if (!welcomed) notifyWelcome(from.id, bot);
-            bot.sendMessage(from.id, message);
+            if (!welcomed) void notifyWelcome(from.id, bot);
+            void bot.sendMessage(from.id, message);
           })
           .catch(err => {
-            bot.sendMessage(from.id, ERR_SERVER);
-            reportError(from.id, err);
+            void bot.sendMessage(from.id, ERR_SERVER);
+            Reporter.error([from.id, err], bot);
           });
         break;
       case '/stop':
         void removeUser(users, from.id, usersLambda)
           .then(({ message }) => {
-            bot.sendMessage(from.id, message);
+            void bot.sendMessage(from.id, message);
           })
           .catch(err => {
-            bot.sendMessage(from.id, ERR_SERVER);
-            reportError(from.id, err);
+            void bot.sendMessage(from.id, ERR_SERVER);
+            Reporter.error([from.id, err], bot);
           });
         break;
       case '/set': {
         const user = findUser(users, from.id);
         if (user?.settings.active) {
-          if (!user?.notifications?.config) notifyConfig(from.id, bot);
-          bot.sendMessage(from.id, 'Настройки', {
+          if (!user?.notifications?.config) void notifyConfig(from.id, bot);
+          void bot.sendMessage(from.id, 'Настройки', {
             reply_markup: {
               inline_keyboard: keyboardMain(),
             },
           });
         } else {
-          bot.sendMessage(from.id, ERR_NO_USER);
+          void bot.sendMessage(from.id, ERR_NO_USER);
         }
         break;
       }
@@ -90,19 +85,19 @@ export const broadcastBotSetup = (bot: TelegramBot, users: TUser[], usersLambda:
     const user = findUser(users, user_id);
 
     if (!user?.settings.active || !msg_id) {
-      bot.sendMessage(user_id, ERR_NO_USER);
+      void bot.sendMessage(user_id, ERR_NO_USER);
       return;
     }
 
     if (!action) {
-      bot.sendMessage(user_id, ERR_SERVER);
+      void bot.sendMessage(user_id, ERR_SERVER);
       return;
     }
 
     if (action === 'return_to_main') {
-      editMessageText(bot, 'Настройки', chat_id, msg_id, keyboardMain());
+      void editMessageText(bot, 'Настройки', chat_id, msg_id, keyboardMain());
     } else if (action === 'district') {
-      editMessageText(
+      void editMessageText(
         bot,
         `Районы: ${getDistrictsNames(user.settings.districts)}`,
         chat_id,
@@ -130,7 +125,7 @@ export const broadcastBotSetup = (bot: TelegramBot, users: TUser[], usersLambda:
         })
         .catch(err => {
           void bot.sendMessage(user_id, ERR_SERVER);
-          reportError(user_id, err);
+          Reporter.error([user_id, err], bot);
         });
     } else if (action.includes('setPrice:')) {
       const {
@@ -145,7 +140,7 @@ export const broadcastBotSetup = (bot: TelegramBot, users: TUser[], usersLambda:
           })
           .catch(err => {
             void bot.sendMessage(user_id, ERR_SERVER);
-            reportError(user_id, err);
+            Reporter.error([user_id, err], bot);
           });
       }
     }

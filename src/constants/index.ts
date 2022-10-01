@@ -1,4 +1,4 @@
-export { CHANNELS, RENT_TB, GIGARENT_CHANNEL_TBILISI } from './channels';
+export { CHANNELS } from './channels';
 
 export { DISTRICTS, ALL_DISTRICTS_KEYS } from './districts';
 
