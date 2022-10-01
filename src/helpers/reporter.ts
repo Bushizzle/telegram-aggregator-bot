@@ -26,7 +26,11 @@ log4js.configure({
     },
     errors: {
       appenders: ['errors', 'console'],
-      level: 'errors',
+      level: 'error',
+    },
+    default: {
+      appenders: ['errors', 'console'],
+      level: 'all',
     },
   },
 });
