@@ -4,24 +4,40 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "16.0.1",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-prettier": "4.2.1",
     "forever-monitor": "3.0.3",
     "input": "1.0.1",
     "log4js": "6.6.1",
     "node-fetch": "2.0.0",
     "node-telegram-bot-api": "^0.57.0",
-    "telegram": "^2.8.4"
+    "prettier": "2.7.1",
+    "telegram": "^2.8.4",
+    "ts-loader": "9.4.1",
+    "typescript-eslint": "0.0.1-alpha.0",
+    "webpack": "5.74.0",
+    "webpack-node-externals": "3.0.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-dynamodb": "3.181.0",
+    "@types/node": "18.7.23",
+    "@types/node-fetch": "2.6.2",
+    "@types/node-telegram-bot-api": "0.57.1",
+    "@typescript-eslint/eslint-plugin": "5.38.1",
+    "@typescript-eslint/parser": "5.38.1",
+    "aws-sdk": "2.1227.0",
     "eslint": "8.24.0",
-    "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.26.0",
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.3",
+    "typescript": "4.8.4",
+    "webpack-cli": "4.10.0"
   }
 }
