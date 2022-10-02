@@ -36,7 +36,8 @@ export const runClient = async (
 
   client.addEventHandler(async event => {
     const { className, message } = event;
-    const channelId = parseInt(message.peerId.channelId.value);
+    const channelId = parseInt(message?.peerId?.channelId?.value);
+
     if (className === 'UpdateNewChannelMessage' && CHANNELS.includes(channelId) && message?.message) {
       const parsedData = await getForwardInfo(client, channelId, message.id, message.message);
       Reporter.log(parsedData);
