@@ -1,5 +1,6 @@
 import { REGEXP } from '../constants';
-import type { TAptData, TConfig, TDistrict } from '../types';
+import type { TAptData, TConfig, TDistrict, TUser } from '../types';
+import { cutChunks } from './index';
 
 export const removeGarbage = (str: string, key: string): string => {
   if (key === 'contacts') return str;
@@ -50,3 +51,17 @@ export const sortObjectKeys = (data: Partial<TAptData>) =>
       }),
       {},
     );
+
+export const messagesInterval = (
+  users: TUser[],
+  // eslint-disable-next-line no-unused-vars
+  callback: (id: number) => unknown,
+  groupSize = 10,
+  timeoutStep = 1000,
+) => {
+  cutChunks(users, groupSize).forEach((chunk: any[], index) => {
+    setTimeout(() => {
+      chunk.forEach(({ id }) => callback(id));
+    }, timeoutStep * index);
+  });
+};
