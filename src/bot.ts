@@ -11,6 +11,7 @@ import type { TAptData, TUser } from './types';
 import type { TLambdaResponse } from './types';
 
 import { Reporter } from './helpers';
+import { messagesInterval } from './helpers/channelMessages';
 
 const editMessageText = (
   bot: TelegramBot,
@@ -151,6 +152,7 @@ export const broadcastBotNotify = (
   bot: TelegramBot,
   { data, message }: { data: TAptData; message: string },
   users: TUser[],
+  usersLambda: string,
   isProd: boolean,
 ) => {
   const districtId = getDistrictId(data.district);
@@ -169,7 +171,18 @@ export const broadcastBotNotify = (
           .filter(user => getPrice(user.settings.price)?.expression(+priceValue));
 
     if (targetUsers.length) {
-      targetUsers.forEach(({ userId }) => bot.sendMessage(userId, message));
+      messagesInterval(
+        targetUsers,
+        userId => {
+          bot.sendMessage(userId, message).catch(error => {
+            if (error?.response?.statusCode === 403) {
+              void removeUser(users, userId, usersLambda);
+            }
+          });
+        },
+        20,
+        500,
+      );
     }
   }
 };

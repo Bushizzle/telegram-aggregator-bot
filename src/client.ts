@@ -43,7 +43,7 @@ export const runClient = async (
       Reporter.log(parsedData);
 
       if (parsedData?.data.price && parsedData.data.district) {
-        broadcastBotNotify(bot, parsedData, users, isProd);
+        broadcastBotNotify(bot, parsedData, users, usersLambda, isProd);
       }
     }
   });

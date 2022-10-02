@@ -7,9 +7,8 @@ export { addUser, removeUser, findUser, editUserSettings, loadAllUsers } from '.
 export { Reporter } from './reporter';
 import { Reporter } from './reporter';
 
-export const cutChunks = (sliceSize: number, array: any[]): any[] => {
+export const cutChunks = (array: any[], chunkSize = 2): any[] => {
   const result = [];
-  const chunkSize = 2;
   for (let i = 0; i < array.length; i += chunkSize) {
     const chunk = array.slice(i, i + chunkSize);
     result.push(chunk);
