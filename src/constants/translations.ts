@@ -1,4 +1,4 @@
-const DICTIONARY = {
+export const DICTIONARY = {
   district: 'Район',
   text: 'Описание',
   address: 'Адрес',
@@ -13,8 +13,4 @@ const DICTIONARY = {
   bathrooms: 'Ванные',
   rooms: 'Комнаты',
   bedrooms: 'Спальни',
-};
-
-module.exports = {
-  DICTIONARY,
 };

@@ -1,4 +1,6 @@
-const DISTRICTS = [
+import type { TDistrict } from '../types';
+
+export const DISTRICTS: TDistrict[] = [
   {
     name: 'Дигоми',
     values: ['дигоми'],
@@ -91,9 +93,4 @@ const DISTRICTS = [
   },
 ];
 
-const ALL_DISTRICTS_KEYS = DISTRICTS.map((d) => d.key);
-
-module.exports = {
-  DISTRICTS,
-  ALL_DISTRICTS_KEYS,
-};
+export const ALL_DISTRICTS_KEYS = DISTRICTS.map(d => d.key);

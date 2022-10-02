@@ -1,6 +1,7 @@
-const { REGEXP } = require('../constants/regexp');
+import { REGEXP } from '../constants';
+import { TConfig } from '../types';
 
-const config = [
+export const configs: TConfig[] = [
   // АРЕНДА ЖИЛЬЯ 🇬🇪 ГРУЗИЯ 1148878384
   {
     id: 1148878384,
@@ -315,6 +316,8 @@ const config = [
         key: 'bedrooms',
         matches: ['Спален:'],
       },
+    ],
+    markers: [
       {
         key: 'geo',
         matches: [REGEXP.GEO],
@@ -324,6 +327,7 @@ const config = [
   // Channel0 (Dev)
   {
     id: 1568042374,
+    link: '',
     markers: [
       {
         key: 'size',
@@ -365,5 +369,3 @@ const config = [
     exceptions: ['батуми', 'кутаиси'],
   },
 ];
-
-module.exports = config;
