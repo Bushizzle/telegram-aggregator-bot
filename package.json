@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "env": "node -e 'console.log(process.env.ADMIN_TELEGRAM_ID)'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node ./src/index.ts ",
     "build": "webpack --mode=development",
