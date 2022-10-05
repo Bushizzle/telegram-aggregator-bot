@@ -15,9 +15,7 @@ export const runClient = async (
   apiHash: string,
   apiSession: string | undefined,
   usersLambda: string,
-  isProd: boolean,
 ) => {
-  if (!isProd) Reporter.log('[DEV] Running in dev mode');
   const stringSession = new StringSession(apiSession);
   const client: TelegramClient = new TelegramClient(stringSession, apiId, apiHash, {
     connectionRetries: 5,
@@ -43,7 +41,7 @@ export const runClient = async (
       Reporter.log(parsedData);
 
       if (parsedData?.data.price && parsedData.data.district) {
-        broadcastBotNotify(bot, parsedData, users, usersLambda, isProd);
+        broadcastBotNotify(bot, parsedData, users, usersLambda);
       }
     }
   });

@@ -8,5 +8,6 @@
 /*/**/.DS_Store
 /*/**/logfile.log
 /.env
+/.env.local
 /dist
 /logs

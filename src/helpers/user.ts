@@ -86,16 +86,22 @@ export const addUser = async (
     }
   });
 
+// FIXME fix null values
+export const repairSettings = (settings: TUserSettings): TUserSettings => ({
+  ...settings,
+  districts: settings.districts.filter(el => el !== null),
+});
+
 export const editUserSettings = async (users: TUser[], userId: number, settings: Partial<TUserSettings>, url: string) =>
   new Promise((resolve, reject) => {
     const user = findUser(users, userId);
     if (user?.settings.active) {
       const modifiedUser = {
         ...user,
-        settings: {
+        settings: repairSettings({
           ...user.settings,
           ...settings,
-        },
+        }),
         notifications: user?.notifications
           ? {
               ...user.notifications,
@@ -121,10 +127,10 @@ export const removeUser = async (users: TUser[], userId: number, url: string): P
     const user = findUser(users, userId);
     const modifiedUser = user && {
       ...user,
-      settings: {
+      settings: repairSettings({
         ...user.settings,
         active: false,
-      },
+      }),
     };
     if (user?.settings.active && modifiedUser) {
       return sendToLambda('PUT', modifiedUser, url)
