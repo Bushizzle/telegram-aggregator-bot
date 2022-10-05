@@ -12,6 +12,7 @@ import type { TLambdaResponse } from './types';
 
 import { Reporter } from './helpers';
 import { messagesInterval } from './helpers/channelMessages';
+import { repairSettings } from './helpers/user';
 
 const editMessageText = (
   bot: TelegramBot,
@@ -100,10 +101,10 @@ export const broadcastBotSetup = (bot: TelegramBot, users: TUser[], usersLambda:
     } else if (action === 'district') {
       void editMessageText(
         bot,
-        `Районы: ${getDistrictsNames(user.settings.districts)}`,
+        `Районы: ${getDistrictsNames(repairSettings(user.settings).districts)}`,
         chat_id,
         msg_id,
-        keyboardDistricts(user.settings.districts),
+        keyboardDistricts(repairSettings(user.settings).districts),
       );
     } else if (action === 'price') {
       void editMessageText(bot, 'Цена', chat_id, msg_id, keyboardPrice(user));
@@ -153,22 +154,15 @@ export const broadcastBotNotify = (
   { data, message }: { data: TAptData; message: string },
   users: TUser[],
   usersLambda: string,
-  isProd: boolean,
 ) => {
   const districtId = getDistrictId(data.district);
   const priceValue = data.price?.match(/\d{2,6}/)?.[0];
 
   if (districtId && priceValue) {
-    const targetUsers = isProd
-      ? users
-          .filter(user => user.settings.active)
-          .filter(user => user.settings.districts.includes(districtId))
-          .filter(user => getPrice(user.settings.price)?.expression(+priceValue))
-      : users
-          .filter(user => +user.userId === 181749991)
-          .filter(user => user.settings.active)
-          .filter(user => user.settings.districts.includes(districtId))
-          .filter(user => getPrice(user.settings.price)?.expression(+priceValue));
+    const targetUsers = users
+      .filter(user => user.settings.active)
+      .filter(user => user.settings.districts.includes(districtId))
+      .filter(user => getPrice(user.settings.price)?.expression(+priceValue));
 
     if (targetUsers.length) {
       messagesInterval(

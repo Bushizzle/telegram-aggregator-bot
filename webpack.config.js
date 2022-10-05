@@ -1,13 +1,13 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
-module.exports = () => ({
+module.exports = (_, { mode }) => ({
   target: 'node',
   externals: [nodeExternals()], // ignore node_modules
   externalsPresets: {
     node: true, // ignore built-in modules like path, fs, etc.
   },
-  entry: './src/index.ts',
+  entry: `./src/${mode === 'development' ? 'index.dev.ts' : 'index.ts'}`,
   module: {
     rules: [
       {
