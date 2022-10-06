@@ -7,6 +7,11 @@ export const PRICES: TPrice[] = [
     key: 1,
   },
   {
+    name: 'До 1000',
+    expression: n => n <= 1000,
+    key: 7,
+  },
+  {
     name: 'От 500 до 1000',
     expression: n => n >= 500 && n <= 1000,
     key: 2,

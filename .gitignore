@@ -11,3 +11,4 @@
 /.env.local
 /dist
 /logs
+/_tools
