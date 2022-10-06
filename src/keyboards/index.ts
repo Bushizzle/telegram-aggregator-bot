@@ -7,7 +7,7 @@ export const keyboardMain = () => KEYBOARD_MAIN;
 export const keyboardDistricts = (districtsIds: number[]) => [
   ...cutChunks(DISTRICTS, 2).map((chunk: TDistrict[]) =>
     chunk.map(d => ({
-      text: `${districtsIds.includes(d.key) ? '✔️' : '❌'} ${d.name}`,
+      text: `${districtsIds.includes(d.key) ? '✅️' : ''} ${d.name}`,
       callback_data: `setDistrict:${d.key}`,
     })),
   ),
@@ -29,7 +29,7 @@ export const keyboardDistricts = (districtsIds: number[]) => [
 export const keyboardPrice = (user: TUser) => [
   ...cutChunks(PRICES, 2).map((chunk: TPrice[]) =>
     chunk.map(p => ({
-      text: `${user.settings.price === p.key ? '✔️' : '❌'} ${p.name}`,
+      text: `${user.settings.price === p.key ? '✅️' : ''} ${p.name}`,
       callback_data: `setPrice:${p.key}`,
     })),
   ),

@@ -1,5 +1,5 @@
 import { REGEXP } from '../constants';
-import type { TAptData, TConfig, TDistrict, TUser } from '../types';
+import type { TConfig, TDistrict, TUser } from '../types';
 import { cutChunks } from './index';
 
 export const removeGarbage = (str: string, key: string): string => {
@@ -40,17 +40,6 @@ export const getConfig = (id: number, configs: TConfig[]) => configs.find(conf =
 
 export const isDistrict = (str: string, districts: TDistrict[]) =>
   districts.find(el => el.values.some(val => str.trim().toLowerCase() === val.trim().toLowerCase()));
-
-export const sortObjectKeys = (data: Partial<TAptData>) =>
-  Object.keys(data)
-    .sort()
-    .reduce(
-      (acc, key) => ({
-        ...acc,
-        [key]: data[key as keyof TAptData],
-      }),
-      {},
-    );
 
 export const messagesInterval = (
   users: TUser[],

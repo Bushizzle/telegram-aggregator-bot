@@ -7,7 +7,6 @@ import {
   haveExceptions,
   getDistrict,
   getConfig,
-  sortObjectKeys,
 } from '../helpers/channelMessages';
 
 import type { TAptData, TConfig } from '../types';
@@ -41,11 +40,14 @@ export const getMessageData = (message: string, channelId: number): TMessageData
     ...adapterByKeys(message, config),
     ...adapterByMarkers(message, config),
   };
+
+  if (!data.price) return undefined;
+
   const district = getDistrict(message, DISTRICTS);
   if (district) data.district = district.name;
 
   return {
-    data: sortObjectKeys(data) as TAptData,
+    data: data as TAptData,
     config,
   };
 };
@@ -55,5 +57,5 @@ export const dataToText = (data: TAptData) => {
   for (const key in data) {
     text += `${DICTIONARY[key as keyof typeof DICTIONARY]}: ${data[key as keyof TAptData]}\n`;
   }
-  return text;
+  return text.split('\n').sort().join('\n');
 };

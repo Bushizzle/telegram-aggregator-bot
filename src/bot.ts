@@ -4,7 +4,7 @@ import { keyboardMain, keyboardDistricts, keyboardPrice } from './keyboards';
 
 import { ERR_SERVER, ERR_NO_USER, MSG_ABOUT, ALL_DISTRICTS_KEYS } from './constants';
 
-import { addUser, editUserSettings, removeUser, findUser, getDistrictsNames, getDistrictId, getPrice } from './helpers';
+import { addUser, editUserSettings, removeUser, findUser, getDistrictId, getPrice, getPriceLabel } from './helpers';
 
 import { notifyWelcome, notifyConfig } from './helpers/notifications';
 import type { TAptData, TUser } from './types';
@@ -101,18 +101,25 @@ export const broadcastBotSetup = (bot: TelegramBot, users: TUser[], usersLambda:
     } else if (action === 'district') {
       void editMessageText(
         bot,
-        `Районы: ${getDistrictsNames(repairSettings(user.settings).districts)}`,
+        `Районы (выбрано: ${user.settings.districts.length})`,
         chat_id,
         msg_id,
         keyboardDistricts(repairSettings(user.settings).districts),
       );
     } else if (action === 'price') {
-      void editMessageText(bot, 'Цена', chat_id, msg_id, keyboardPrice(user));
+      void editMessageText(
+        bot,
+        `Цена (выбрано: ${getPriceLabel(user.settings.price)})`,
+        chat_id,
+        msg_id,
+        keyboardPrice(user),
+      );
     } else if (action.includes('setDistrict:')) {
       let {
         settings: { districts },
       } = user;
       let value = action.substring('setDistrict:'.length);
+      const oldDistrictsValue = districts.slice();
 
       if (value === 'all') districts = ALL_DISTRICTS_KEYS;
       if (value === 'none') districts = [];
@@ -121,29 +128,47 @@ export const broadcastBotSetup = (bot: TelegramBot, users: TUser[], usersLambda:
         else districts.push(+value);
       }
 
-      editUserSettings(users, user_id, { districts }, usersLambda)
-        .then(() => {
-          void editMessageText(bot, 'Районы:', chat_id, msg_id, keyboardDistricts(districts));
-        })
-        .catch(err => {
-          void bot.sendMessage(user_id, ERR_SERVER);
-          Reporter.error([user_id, err], bot);
-        });
+      void editMessageText(
+        bot,
+        `Районы (выбрано: ${user.settings.districts.length})`,
+        chat_id,
+        msg_id,
+        keyboardDistricts(districts),
+      );
+
+      editUserSettings(users, user_id, { districts }, usersLambda).catch(err => {
+        user.settings.districts = oldDistrictsValue.slice();
+        void editMessageText(
+          bot,
+          `Районы (выбрано: ${oldDistrictsValue.length})`,
+          chat_id,
+          msg_id,
+          keyboardDistricts(oldDistrictsValue),
+        );
+        void bot.sendMessage(user_id, ERR_SERVER);
+        Reporter.error([user_id, err], bot);
+      });
     } else if (action.includes('setPrice:')) {
       const {
         settings: { price },
       } = user;
       const value = +action.substring('setPrice:'.length);
       if (price !== value) {
-        editUserSettings(users, user_id, { price: value }, usersLambda)
-          .then(() => {
-            user.settings.price = value;
-            void editMessageText(bot, 'Цена:', chat_id, msg_id, keyboardPrice(user));
-          })
-          .catch(err => {
-            void bot.sendMessage(user_id, ERR_SERVER);
-            Reporter.error([user_id, err], bot);
-          });
+        const oldPrice = user.settings.price;
+        user.settings.price = value;
+        void editMessageText(
+          bot,
+          `Цена (выбрано: ${getPriceLabel(user.settings.price)})`,
+          chat_id,
+          msg_id,
+          keyboardPrice(user),
+        );
+        editUserSettings(users, user_id, { price: value }, usersLambda).catch(err => {
+          user.settings.price = oldPrice;
+          void editMessageText(bot, `Цена (выбрано: ${getPriceLabel(oldPrice)})`, chat_id, msg_id, keyboardPrice(user));
+          void bot.sendMessage(user_id, ERR_SERVER);
+          Reporter.error([user_id, err], bot);
+        });
       }
     }
   });

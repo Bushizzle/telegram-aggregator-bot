@@ -2,14 +2,14 @@ import type { TDistrict } from '../types';
 
 export const DISTRICTS: TDistrict[] = [
   {
-    name: 'Дигоми',
-    values: ['дигоми'],
-    key: 1,
+    name: 'Авлабари',
+    values: ['авлабари', 'avlabari'],
+    key: 6,
   },
   {
-    name: 'Сабуртало',
-    values: ['сабуртало', 'saburtalo'],
-    key: 2,
+    name: 'Багеби',
+    values: ['багеби', 'bagebi'],
+    key: 17,
   },
   {
     name: 'Ваке',
@@ -17,24 +17,9 @@ export const DISTRICTS: TDistrict[] = [
     key: 3,
   },
   {
-    name: 'Сололаки',
-    values: ['сололаки', 'sololaki'],
-    key: 4,
-  },
-  {
-    name: 'Мтацминда',
-    values: ['мтацминда'],
-    key: 5,
-  },
-  {
-    name: 'Авлабари',
-    values: ['авлабари'],
-    key: 6,
-  },
-  {
-    name: 'Чугурети',
-    values: ['чугурети'],
-    key: 7,
+    name: 'Вашлиджвари',
+    values: ['вашлиджвари'],
+    key: 13,
   },
   {
     name: 'Вера',
@@ -43,28 +28,18 @@ export const DISTRICTS: TDistrict[] = [
   },
   {
     name: 'Глдани',
-    values: ['глдани'],
+    values: ['глдани', 'gldani'],
     key: 9,
-  },
-  {
-    name: 'Мухиани',
-    values: ['мухиани'],
-    key: 10,
-  },
-  {
-    name: 'Надзеладеви',
-    values: ['надзеладеви', 'надзаладеви'],
-    key: 11,
   },
   {
     name: 'Дигоми',
     values: ['дигоми', 'digomi'],
-    key: 12,
+    key: 1,
   },
   {
-    name: 'Вашлиджвари',
-    values: ['вашлиджвари'],
-    key: 13,
+    name: 'Дидубе',
+    values: ['дидубе', 'дидуби', 'didube', 'didybe', 'didubi', 'didybi'],
+    key: 18,
   },
   {
     name: 'Исани',
@@ -73,8 +48,23 @@ export const DISTRICTS: TDistrict[] = [
   },
   {
     name: 'Крцаниси',
-    values: ['крцаниси'],
+    values: ['крцаниси', 'krcanisi', 'krtsanisi'],
     key: 15,
+  },
+  {
+    name: 'Мтацминда',
+    values: ['мтацминда', 'mtacminda', 'mtatsminda'],
+    key: 5,
+  },
+  {
+    name: 'Мухиани',
+    values: ['мухиани', 'muhiani', 'myhiani'],
+    key: 10,
+  },
+  {
+    name: 'Надзеладеви',
+    values: ['надзеладеви', 'надзаладеви'],
+    key: 11,
   },
   {
     name: 'Ортачала',
@@ -82,14 +72,19 @@ export const DISTRICTS: TDistrict[] = [
     key: 16,
   },
   {
-    name: 'Багеби',
-    values: ['багеби', 'bagebi'],
-    key: 17,
+    name: 'Сабуртало',
+    values: ['сабуртало', 'saburtalo'],
+    key: 2,
   },
   {
-    name: 'Дидубе',
-    values: ['дидубе', 'дидуби', 'didube', 'didybe', 'didubi', 'didybi'],
-    key: 18,
+    name: 'Сололаки',
+    values: ['сололаки', 'sololaki'],
+    key: 4,
+  },
+  {
+    name: 'Чугурети',
+    values: ['чугурети', 'chugureti'],
+    key: 7,
   },
 ];
 
