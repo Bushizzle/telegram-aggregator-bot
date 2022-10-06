@@ -40,7 +40,9 @@ export const runClient = async (
       const parsedData = await getForwardInfo(client, channelId, message.id, message.message);
       Reporter.log(parsedData);
 
-      if (parsedData) broadcastBotNotify(bot, parsedData, users, usersLambda);
+      if (parsedData?.data?.district && parsedData?.data?.price) {
+        broadcastBotNotify(bot, parsedData, users, usersLambda);
+      }
     }
   });
 

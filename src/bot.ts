@@ -116,27 +116,27 @@ export const broadcastBotSetup = (bot: TelegramBot, users: TUser[], usersLambda:
       );
     } else if (action.includes('setDistrict:')) {
       let {
-        settings: { districts },
+        settings: { districts: selectedDistricts },
       } = user;
       let value = action.substring('setDistrict:'.length);
-      const oldDistrictsValue = districts.slice();
+      const oldDistrictsValue = selectedDistricts.slice();
 
-      if (value === 'all') districts = ALL_DISTRICTS_KEYS;
-      if (value === 'none') districts = [];
+      if (value === 'all') selectedDistricts = ALL_DISTRICTS_KEYS;
+      if (value === 'none') selectedDistricts = [];
       else {
-        if (districts.includes(+value)) districts.splice(districts.indexOf(+value), 1);
-        else districts.push(+value);
+        if (selectedDistricts.includes(+value)) selectedDistricts.splice(selectedDistricts.indexOf(+value), 1);
+        else selectedDistricts.push(+value);
       }
 
       void editMessageText(
         bot,
-        `Районы (выбрано: ${user.settings.districts.length})`,
+        `Районы (выбрано: ${selectedDistricts.length})`,
         chat_id,
         msg_id,
-        keyboardDistricts(districts),
+        keyboardDistricts(selectedDistricts),
       );
 
-      editUserSettings(users, user_id, { districts }, usersLambda).catch(err => {
+      editUserSettings(users, user_id, { districts: selectedDistricts }, usersLambda).catch(err => {
         user.settings.districts = oldDistrictsValue.slice();
         void editMessageText(
           bot,
