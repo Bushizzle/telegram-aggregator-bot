@@ -3,13 +3,13 @@ import { findUser } from '../../helpers';
 import { ERR_NO_USER, ERR_SERVER } from '../../constants';
 import { TUser } from '../../types';
 
-import { botReturnToMain } from './reactionReturnToMain';
-import { botDistrict } from './reactionDistrict';
-import { botPrice } from './reactionPrice';
-import { botSetDistrict } from './reactionSetDistrict';
-import { botSetPrice } from './reactionSetPrice';
+import { botReturnToMain } from './queryReturnToMain';
+import { botDistrict } from './queryDistrict';
+import { botPrice } from './queryPrice';
+import { botSetDistrict } from './querySetDistrict';
+import { botSetPrice } from './querySetPrice';
 
-export const botReactionsHandler = (
+export const botQueryHandler = (
   bot: TelegramBot,
   callbackQuery: TelegramBot.CallbackQuery,
   users: TUser[],

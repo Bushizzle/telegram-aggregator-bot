@@ -13,6 +13,10 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier', 'import'],
   extends: ['eslint:recommended', 'prettier'],
   rules: {
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+    ],
     'no-duplicate-imports': 'off',
     'no-irregular-whitespace': 'off',
     'no-useless-escape': 'off',
