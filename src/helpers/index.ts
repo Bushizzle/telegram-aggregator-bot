@@ -1,7 +1,10 @@
+import * as TelegramBot from 'node-telegram-bot-api';
+import { InlineKeyboardButton } from 'node-telegram-bot-api';
 import { TelegramClient } from 'telegram';
-import { getMessageData, dataToText } from '../channelAdapters';
+
 import { PRICES, DISTRICTS } from '../constants';
 
+import { getMessageData, dataToText } from '../channelAdapters';
 export { addUser, removeUser, findUser, editUserSettings, loadAllUsers } from './user';
 export { Reporter } from './reporter';
 import { Reporter } from './reporter';
@@ -37,3 +40,19 @@ export const getDistrictId = (text: string): number => {
 export const getPriceLabel = (priceKey: number) => getPrice(priceKey)?.name.toLowerCase() || '';
 
 export const getPrice = (priceKey: number) => PRICES.find(p => p.key === priceKey);
+
+export const editMessageText = (
+  bot: TelegramBot,
+  replyText: string,
+  chatId: number,
+  messageId: number,
+  inlineKeyboard: InlineKeyboardButton[][],
+) =>
+  bot.editMessageText(replyText, {
+    chat_id: chatId,
+    message_id: messageId,
+    parse_mode: 'HTML',
+    reply_markup: {
+      inline_keyboard: inlineKeyboard,
+    },
+  });

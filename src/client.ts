@@ -6,7 +6,7 @@ import * as Bot from 'node-telegram-bot-api';
 
 import { getForwardInfo, loadAllUsers } from './helpers';
 import { CHANNELS } from './constants';
-import { broadcastBotSetup, broadcastBotNotify } from './bot';
+import { botSetup, botBroadcast } from './bot';
 import { Reporter } from './helpers';
 
 export const runClient = async (
@@ -41,10 +41,10 @@ export const runClient = async (
       Reporter.log(parsedData);
 
       if (parsedData?.data?.district && parsedData?.data?.price) {
-        broadcastBotNotify(bot, parsedData, users, usersLambda);
+        botBroadcast(bot, parsedData, users, usersLambda);
       }
     }
   });
 
-  broadcastBotSetup(bot, users, usersLambda);
+  botSetup(bot, users, usersLambda);
 };
