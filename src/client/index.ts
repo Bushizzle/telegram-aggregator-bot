@@ -4,10 +4,10 @@ import { StringSession } from 'telegram/sessions';
 import input from 'input';
 import * as Bot from 'node-telegram-bot-api';
 
-import { getForwardInfo, loadAllUsers } from './helpers';
-import { CHANNELS } from './constants';
-import { botSetup, botBroadcast } from './bot';
-import { Reporter } from './helpers';
+import { getForwardInfo, loadAllUsers } from '../helpers';
+import { CHANNELS } from '../constants';
+import { botSetup, botBroadcast } from '../bot';
+import { Reporter } from '../helpers';
 
 export const runClient = async (
   token: string,
