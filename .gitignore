@@ -9,5 +9,5 @@
 /.env
 /.env.local
 /dist
-/logs
+/**/*.log
 /_tools
