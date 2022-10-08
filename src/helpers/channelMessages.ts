@@ -44,13 +44,13 @@ export const isDistrict = (str: string, districts: TDistrict[]) =>
 export const messagesInterval = (
   users: TUser[],
   // eslint-disable-next-line no-unused-vars
-  callback: (id: number) => unknown,
+  callback: (user: number) => unknown,
   groupSize = 10,
   timeoutStep = 1000,
 ) => {
-  cutChunks(users, groupSize).forEach((chunk: any[], index) => {
+  cutChunks(users, groupSize).forEach((chunk: TUser[], index) => {
     setTimeout(() => {
-      chunk.forEach(({ id }) => callback(id));
+      chunk.forEach(({ userId }) => callback(userId));
     }, timeoutStep * index);
   });
 };
