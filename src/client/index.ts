@@ -37,7 +37,7 @@ export const runClient = async (
     const channelId = parseInt(message?.peerId?.channelId?.value || message?.peerId?.channelId);
 
     if (className === 'UpdateNewChannelMessage' && CHANNELS.includes(channelId) && message?.message) {
-      const parsedData = await getForwardInfo(channelId, message.message, message.id);
+      const parsedData = getForwardInfo(channelId, message.message, message.id);
       Reporter.log(parsedData);
 
       if (parsedData?.data?.district && parsedData?.data?.price) {

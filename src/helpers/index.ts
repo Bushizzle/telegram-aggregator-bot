@@ -1,8 +1,6 @@
-import { PRICES, DISTRICTS } from '../constants';
 import * as TelegramBot from 'node-telegram-bot-api';
 import { InlineKeyboardButton } from 'node-telegram-bot-api';
-import { TelegramClient } from 'telegram';
-
+import { PRICES, DISTRICTS } from '../constants';
 
 import { getMessageData, dataToText } from '../channelAdapters';
 export { addUser, removeUser, findUser, editUserSettings, loadAllUsers } from './user';
