@@ -6,7 +6,8 @@
     "strict": true,
     "lib": [
       "es2021"
-    ]
+    ],
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules"

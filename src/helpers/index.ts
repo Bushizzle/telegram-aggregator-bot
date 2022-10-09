@@ -1,4 +1,3 @@
-import { TelegramClient } from 'telegram';
 import { getMessageData, dataToText } from '../channelAdapters';
 import { PRICES, DISTRICTS } from '../constants';
 
@@ -15,7 +14,7 @@ export const cutChunks = (array: any[], chunkSize = 2): any[] => {
   return result;
 };
 
-export const getForwardInfo = async (client: TelegramClient, channelId: number, messageId: number, message: string) => {
+export const getForwardInfo = (channelId: number, message: string, messageId: number) => {
   const messageData = getMessageData(message, channelId);
   if (!messageData?.data?.price) return undefined;
 

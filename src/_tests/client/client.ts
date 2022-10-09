@@ -3,13 +3,16 @@ import { StringSession } from 'telegram/sessions';
 //@ts-expect-error, find types
 import input from 'input';
 import * as Bot from 'node-telegram-bot-api';
+import { getForwardInfo } from '../../helpers';
+import { CHANNELS } from '../../constants';
+import { broadcastBotSetup, broadcastBotNotify } from '../../bot';
+import { Reporter } from '../../helpers';
 
-import { getForwardInfo, loadAllUsers } from './helpers';
-import { CHANNELS } from './constants';
-import { broadcastBotSetup, broadcastBotNotify } from './bot';
-import { Reporter } from './helpers';
+// @ts-ignore
+import * as mockUsers from '../mocks/users';
+import * as mockMessages from '../mocks/messages.json';
 
-export const runClient = async (
+export const runTestClient = async (
   token: string,
   apiId: number,
   apiHash: string,
@@ -21,7 +24,6 @@ export const runClient = async (
     connectionRetries: 5,
   });
   const bot = new Bot(token, { polling: true });
-  const users = await loadAllUsers(usersLambda);
 
   await client.start({
     phoneNumber: async () => await input.text('Please enter your number: '),
@@ -32,19 +34,17 @@ export const runClient = async (
 
   if (!apiSession) Reporter.console(client.session.save());
 
-  client.addEventHandler(async event => {
+  for (const event of mockMessages as any) {
     const { className, message } = event;
-    const channelId = parseInt(message?.peerId?.channelId?.value || message?.peerId?.channelId);
-
+    const channelId = parseInt(message?.peerId?.channelId);
     if (className === 'UpdateNewChannelMessage' && CHANNELS.includes(channelId) && message?.message) {
-      const parsedData = await getForwardInfo(channelId, message.message, message.id);
+      const parsedData = getForwardInfo(channelId, message.message, message.id);
       Reporter.log(parsedData);
-
       if (parsedData?.data?.district && parsedData?.data?.price) {
-        broadcastBotNotify(bot, parsedData, users, usersLambda);
+        broadcastBotNotify(bot, parsedData, mockUsers, usersLambda);
       }
     }
-  });
+  }
 
-  broadcastBotSetup(bot, users, usersLambda);
+  broadcastBotSetup(bot, mockUsers, usersLambda);
 };
