@@ -7,11 +7,11 @@ log4js.configure({
   appenders: {
     logs: {
       type: 'file',
-      filename: '../logs/logfile.log',
+      filename: './logs/logfile.log',
     },
     errors: {
       type: 'file',
-      filename: '../logs/errors.log',
+      filename: './logs/errors.log',
     },
     console: { type: 'console' },
   },

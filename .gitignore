@@ -6,9 +6,8 @@
 */**/crash.log
 /.DS_Store
 /*/**/.DS_Store
-/*/**/logfile.log
 /.env
 /.env.local
 /dist
-/logs
+/**/*.log
 /_tools

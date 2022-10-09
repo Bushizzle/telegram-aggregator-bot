@@ -4,10 +4,10 @@ import { StringSession } from 'telegram/sessions';
 import input from 'input';
 import * as Bot from 'node-telegram-bot-api';
 
-import { getForwardInfo, loadAllUsers } from './helpers';
-import { CHANNELS } from './constants';
-import { broadcastBotSetup, broadcastBotNotify } from './bot';
-import { Reporter } from './helpers';
+import { getForwardInfo, loadAllUsers } from '../helpers';
+import { CHANNELS } from '../constants';
+import { botSetup, botBroadcast } from '../bot';
+import { Reporter } from '../helpers';
 
 export const runClient = async (
   token: string,
@@ -41,10 +41,10 @@ export const runClient = async (
       Reporter.log(parsedData);
 
       if (parsedData?.data?.district && parsedData?.data?.price) {
-        broadcastBotNotify(bot, parsedData, users, usersLambda);
+        botBroadcast(bot, parsedData, users, usersLambda);
       }
     }
   });
 
-  broadcastBotSetup(bot, users, usersLambda);
+  botSetup(bot, users, usersLambda);
 };
