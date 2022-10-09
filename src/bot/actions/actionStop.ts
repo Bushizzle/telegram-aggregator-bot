@@ -1,17 +1,16 @@
 import * as TelegramBot from 'node-telegram-bot-api';
 import { removeUser, Reporter } from '../../helpers';
-import { TUser } from '../../types';
 import { ERR_SERVER } from '../../constants';
 
-export const botStop = (bot: TelegramBot, users: TUser[], from: TelegramBot.Message['from'], usersLambda: string) => {
+export const botStop = (from: TelegramBot.Message['from']) => {
   from &&
     from.username &&
-    void removeUser(users, from.id, usersLambda)
+    void removeUser(from.id)
       .then(({ message }) => {
-        void bot.sendMessage(from.id, message);
+        void global.bot.sendMessage(from.id, message);
       })
       .catch(err => {
-        void bot.sendMessage(from.id, ERR_SERVER);
-        Reporter.error([from.id, err], bot);
+        void global.bot.sendMessage(from.id, ERR_SERVER);
+        Reporter.error([from.id, err]);
       });
 };

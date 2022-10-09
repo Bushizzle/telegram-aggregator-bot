@@ -9,6 +9,7 @@ import {
   ALL_DISTRICTS_KEYS,
 } from '../constants';
 import { TLambdaResponse, TUser, TUserSettings } from '../types';
+import { Storage } from '../storage';
 
 const newUser = (userId: number, name: string, userName: string): TUser => ({
   userId,
@@ -34,20 +35,17 @@ const sendToLambda = (method: string, data: Partial<TUser>, url: string): Promis
     body: JSON.stringify(data),
   }).then(res => res.json());
 
-export const addUser = async (
-  users: TUser[],
-  userId: number,
-  name: string,
-  userName: string,
-  url: string,
-): Promise<TLambdaResponse> =>
+export const addUser = async (userId: number, name: string, userName: string): Promise<TLambdaResponse> =>
   new Promise((resolve, reject) => {
+    const usersLambda = Storage.getUsersLambda();
+    const users = Storage.getUsers();
     const user = findUser(users, userId);
     if (!user) {
       const createdUser = newUser(userId, name, userName);
-      return sendToLambda('POST', createdUser, url)
+      return sendToLambda('POST', createdUser, usersLambda)
         .then(() => {
           users.push(createdUser);
+          Storage.setUsers(users);
           resolve({
             status: 'OK',
             message: SUCCESS_SUBSCRIBE,
@@ -73,8 +71,9 @@ export const addUser = async (
               config: false,
             },
       };
-      return sendToLambda('PUT', modifiedUser, url).then(() => {
+      return sendToLambda('PUT', modifiedUser, usersLambda).then(() => {
         users.splice(users.indexOf(user), 1, modifiedUser);
+        Storage.setUsers(users);
         resolve({
           status: 'OK',
           message: SUCCESS_SUBSCRIBE,
@@ -92,8 +91,10 @@ export const repairSettings = (settings: TUserSettings): TUserSettings => ({
   districts: settings.districts.filter(el => el !== null),
 });
 
-export const editUserSettings = async (users: TUser[], userId: number, settings: Partial<TUserSettings>, url: string) =>
+export const editUserSettings = async (userId: number, settings: Partial<TUserSettings>) =>
   new Promise((resolve, reject) => {
+    const usersLambda = Storage.getUsersLambda();
+    const users = Storage.getUsers();
     const user = findUser(users, userId);
     if (user?.settings.active) {
       const modifiedUser = {
@@ -112,9 +113,10 @@ export const editUserSettings = async (users: TUser[], userId: number, settings:
               config: true,
             },
       };
-      return sendToLambda('PUT', modifiedUser, url)
+      return sendToLambda('PUT', modifiedUser, usersLambda)
         .then(result => {
           users.splice(users.indexOf(user), 1, modifiedUser);
+          Storage.setUsers(users);
           resolve({ result, status: 'OK' });
         })
         .catch(err => reject(err));
@@ -122,8 +124,10 @@ export const editUserSettings = async (users: TUser[], userId: number, settings:
     resolve({ status: 'ERR', message: ERR_NO_USER });
   });
 
-export const removeUser = async (users: TUser[], userId: number, url: string): Promise<TLambdaResponse> =>
+export const removeUser = async (userId: number): Promise<TLambdaResponse> =>
   new Promise((resolve, reject) => {
+    const usersLambda = Storage.getUsersLambda();
+    const users = Storage.getUsers();
     const user = findUser(users, userId);
     const modifiedUser = user && {
       ...user,
@@ -133,9 +137,10 @@ export const removeUser = async (users: TUser[], userId: number, url: string): P
       }),
     };
     if (user?.settings.active && modifiedUser) {
-      return sendToLambda('PUT', modifiedUser, url)
+      return sendToLambda('PUT', modifiedUser, usersLambda)
         .then(() => {
           users.splice(users.indexOf(user), 1, modifiedUser);
+          Storage.setUsers(users);
           resolve({ status: 'OK', message: SUCCESS_UNSUBSCRIBE });
         })
         .catch(err => reject(err));

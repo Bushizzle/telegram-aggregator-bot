@@ -1,4 +1,3 @@
-import * as TelegramBot from 'node-telegram-bot-api';
 import { InlineKeyboardButton } from 'node-telegram-bot-api';
 import { PRICES, DISTRICTS } from '../constants';
 
@@ -40,13 +39,12 @@ export const getPriceLabel = (priceKey: number) => getPrice(priceKey)?.name.toLo
 export const getPrice = (priceKey: number) => PRICES.find(p => p.key === priceKey);
 
 export const editMessageText = (
-  bot: TelegramBot,
   replyText: string,
   chatId: number,
   messageId: number,
   inlineKeyboard: InlineKeyboardButton[][],
 ) =>
-  bot.editMessageText(replyText, {
+  global.bot.editMessageText(replyText, {
     chat_id: chatId,
     message_id: messageId,
     parse_mode: 'HTML',

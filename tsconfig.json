@@ -1,5 +1,14 @@
 {
+  "ts-node": {
+    "files": true
+  },
+  "files": [
+    "src/index.dev.ts",
+    "src/index.test.ts",
+    "src/global.d.ts"
+  ],
   "compilerOptions": {
+    "allowUmdGlobalAccess": true,
     "module": "commonjs",
     "target": "es6",
     "sourceMap": true,
@@ -11,5 +20,5 @@
   },
   "exclude": [
     "node_modules"
-  ]
+  ],
 }
