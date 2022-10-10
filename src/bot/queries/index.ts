@@ -10,7 +10,7 @@ import { botSetDistrict } from './querySetDistrict';
 import { botSetPrice } from './querySetPrice';
 
 export const botQueryHandler = (callbackQuery: TelegramBot.CallbackQuery) => {
-  const users = Storage.getUsers();
+  const users = Storage.users;
   const user_id = callbackQuery.from.id;
   const action = callbackQuery?.data;
   const msg_id = callbackQuery?.message?.message_id;
@@ -19,12 +19,12 @@ export const botQueryHandler = (callbackQuery: TelegramBot.CallbackQuery) => {
   const user = findUser(users, user_id);
 
   if (!user?.settings.active || !msg_id) {
-    void global.bot.sendMessage(user_id, ERR_NO_USER);
+    void Storage.bot.sendMessage(user_id, ERR_NO_USER);
     return;
   }
 
   if (!action) {
-    void global.bot.sendMessage(user_id, ERR_SERVER);
+    void Storage.bot.sendMessage(user_id, ERR_SERVER);
     return;
   }
 

@@ -15,7 +15,7 @@ import { configs } from './config';
 
 const adapterByKeys = (message: string, config: TConfig) =>
   config?.keys?.length
-    ? mapStrings(message).reduce((res: Partial<TAptData>, str) => {
+    ? mapStrings(message).reduce((res: TAptData, str) => {
         const keyPair = getKeypair(config, str);
         if (keyPair?.value && keyPair?.key) res[keyPair.key] = removeGarbage(getValue(str, keyPair.value), keyPair.key);
         return res;
@@ -24,7 +24,7 @@ const adapterByKeys = (message: string, config: TConfig) =>
 
 const adapterByMarkers = (message: string, config: TConfig) =>
   config?.markers?.length
-    ? mapStrings(message).reduce((res: Partial<TAptData>, str) => {
+    ? mapStrings(message).reduce((res: TAptData, str) => {
         const marker = config?.markers?.find(({ matches, exceptions }) =>
           matches.some(val => str.match(val) && (!exceptions || !haveExceptions(str, { exceptions }))),
         );
@@ -36,18 +36,16 @@ const adapterByMarkers = (message: string, config: TConfig) =>
 export const getMessageData = (message: string, channelId: number): TMessageData | undefined => {
   const config = getConfig(channelId, configs);
   if (!config || haveExceptions(message, config)) return undefined;
-  const data: Partial<TAptData> = {
+  const data: TAptData = {
     ...adapterByKeys(message, config),
     ...adapterByMarkers(message, config),
   };
-
-  if (!data.price) return undefined;
 
   const district = getDistrict(message, DISTRICTS);
   if (district) data.district = district.name;
 
   return {
-    data: data as TAptData,
+    data,
     config,
   };
 };

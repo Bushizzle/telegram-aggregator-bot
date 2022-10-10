@@ -3,11 +3,9 @@
 /.idea
 /node_modules
 
-*/**/crash.log
+*/**/*.log
 /.DS_Store
 /*/**/.DS_Store
 /.env
 /.env.local
 /dist
-/**/*.log
-/_tools

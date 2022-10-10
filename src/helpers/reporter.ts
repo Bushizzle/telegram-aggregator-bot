@@ -1,6 +1,5 @@
 import * as log4js from 'log4js';
-
-const { ADMIN_TELEGRAM_ID } = process.env;
+import { Storage } from '../storage';
 
 log4js.configure({
   appenders: {
@@ -51,6 +50,9 @@ export class Reporter {
   public static error(messages: any[]) {
     const errorText = `[ERROR]\n${Reporter.mapMessage(messages)}`;
     err.error(errorText);
-    ADMIN_TELEGRAM_ID && void global.bot?.sendMessage(ADMIN_TELEGRAM_ID, errorText);
+    Storage.admin && void Storage.bot.sendMessage(Storage.admin, errorText);
+  }
+  public static admin(message: string) {
+    Storage.admin && void Storage.bot.sendMessage(Storage.admin, message);
   }
 }

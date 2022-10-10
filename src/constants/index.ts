@@ -1,4 +1,4 @@
-export { CHANNELS, CHANNEL_0 } from './channels';
+export { CHANNELS } from './channels';
 
 export { DISTRICTS, ALL_DISTRICTS_KEYS } from './districts';
 

@@ -1,5 +1,9 @@
 export { TUser, TUserSettings, TUserNotifications } from './user';
 
+export type TApi = {
+  usersLambda: string;
+};
+
 export type TLambdaResponse = {
   status: string;
   message: string;
@@ -19,22 +23,26 @@ export type TPrice = {
   key: number;
 };
 
+enum TAptProps {
+  price = 'price',
+  district = 'district',
+  geo = 'geo',
+  address = 'address',
+  pets = 'pets',
+  balcony = 'balcony',
+  bedrooms = 'bedrooms',
+  rooms = 'rooms',
+  floor = 'floor',
+  size = 'size',
+  owner = 'owner',
+  text = 'text',
+  contacts = 'contacts',
+  agent = 'agent',
+  bathrooms = 'bathrooms',
+}
+
 export type TAptData = {
-  price: string;
-  district: string;
-  geo?: string;
-  address?: string;
-  pets?: string;
-  balcony?: string;
-  bedrooms?: string;
-  rooms?: string;
-  floor?: string;
-  size?: string;
-  owner?: string;
-  text?: string;
-  contacts?: string;
-  agent?: string;
-  bathrooms?: string;
+  [key: string]: TAptProps[keyof TAptProps];
 };
 
 export type TConfigKey = {

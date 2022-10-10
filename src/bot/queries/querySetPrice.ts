@@ -2,6 +2,7 @@ import { editMessageText, editUserSettings, getPriceLabel, Reporter } from '../.
 import { keyboardPrice } from '../../keyboards';
 import { ERR_SERVER } from '../../constants';
 import { TUser } from '../../types';
+import { Storage } from '../../storage';
 
 export const botSetPrice = (action: string, user: TUser, chatId: number, msgId: number, userId: number) => {
   const {
@@ -15,7 +16,7 @@ export const botSetPrice = (action: string, user: TUser, chatId: number, msgId: 
     editUserSettings(userId, { price: value }).catch(err => {
       user.settings.price = oldPrice;
       void editMessageText(`Цена (выбрано: ${getPriceLabel(oldPrice)})`, chatId, msgId, keyboardPrice(user));
-      void global.bot.sendMessage(userId, ERR_SERVER);
+      void Storage.bot.sendMessage(userId, ERR_SERVER);
       Reporter.error([userId, err]);
     });
   }

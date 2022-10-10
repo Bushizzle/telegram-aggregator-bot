@@ -4,6 +4,7 @@ import { PRICES, DISTRICTS } from '../constants';
 import { getMessageData, dataToText } from '../channelAdapters';
 export { addUser, removeUser, findUser, editUserSettings, loadAllUsers } from './user';
 export { Reporter } from './reporter';
+import { Storage } from '../storage';
 import { Reporter } from './reporter';
 
 export const cutChunks = (array: any[], chunkSize = 2): any[] => {
@@ -17,7 +18,7 @@ export const cutChunks = (array: any[], chunkSize = 2): any[] => {
 
 export const getForwardInfo = (channelId: number, message: string, messageId: number) => {
   const messageData = getMessageData(message, channelId);
-  if (!messageData?.data?.price) return undefined;
+  if (!messageData) return undefined;
 
   const { data, config } = messageData;
   Reporter.log(data);
@@ -25,7 +26,7 @@ export const getForwardInfo = (channelId: number, message: string, messageId: nu
 
   return {
     data,
-    message: `${replyText}Канал: https://t.me/${config.link}\nОбъявление: https://t.me/c/${channelId}/${messageId}`,
+    message: `${replyText}\nКанал: https://t.me/${config.link}\nОбъявление: https://t.me/c/${channelId}/${messageId}`,
   };
 };
 
@@ -44,7 +45,7 @@ export const editMessageText = (
   messageId: number,
   inlineKeyboard: InlineKeyboardButton[][],
 ) =>
-  global.bot.editMessageText(replyText, {
+  Storage.bot.editMessageText(replyText, {
     chat_id: chatId,
     message_id: messageId,
     parse_mode: 'HTML',

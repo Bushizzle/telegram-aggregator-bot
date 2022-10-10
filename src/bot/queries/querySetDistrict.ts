@@ -2,6 +2,7 @@ import { ALL_DISTRICTS_KEYS, ERR_SERVER } from '../../constants';
 import { editMessageText, editUserSettings, Reporter } from '../../helpers';
 import { keyboardDistricts } from '../../keyboards';
 import { TUser } from '../../types';
+import { Storage } from '../../storage';
 
 export const botSetDistrict = (action: string, user: TUser, chatId: number, msgId: number, userId: number) => {
   let {
@@ -32,7 +33,7 @@ export const botSetDistrict = (action: string, user: TUser, chatId: number, msgI
       msgId,
       keyboardDistricts(oldDistrictsValue),
     );
-    void global.bot.sendMessage(userId, ERR_SERVER);
+    void Storage.bot.sendMessage(userId, ERR_SERVER);
     Reporter.error([userId, err]);
   });
 };

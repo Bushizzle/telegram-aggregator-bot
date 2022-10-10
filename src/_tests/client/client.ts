@@ -2,23 +2,21 @@ import { TelegramClient } from 'telegram';
 import { StringSession } from 'telegram/sessions';
 //@ts-expect-error, find types
 import input from 'input';
-import * as Bot from 'node-telegram-bot-api';
 
 import { getForwardInfo } from '../../helpers';
-import { botSetup, botBroadcast } from '../../bot';
+import { botBroadcast } from '../../bot';
 import { Reporter } from '../../helpers';
 import { Storage } from '../../storage';
 
 import * as mockMessages from '../mocks/messages.json';
 import * as mockUsers from '../mocks/users.json';
 
-export const runClient = async (token: string, apiId: number, apiHash: string, apiSession: string | undefined) => {
+export const runTestClient = async (apiId: number, apiHash: string, apiSession: string | undefined) => {
   const stringSession = new StringSession(apiSession);
   const client: TelegramClient = new TelegramClient(stringSession, apiId, apiHash, {
     connectionRetries: 5,
   });
-  global.bot = new Bot(token, { polling: true });
-  Storage.setUsers(mockUsers);
+  Storage.users = mockUsers;
 
   await client.start({
     phoneNumber: async () => await input.text('Please enter your number: '),
@@ -29,19 +27,28 @@ export const runClient = async (token: string, apiId: number, apiHash: string, a
 
   if (!apiSession) Reporter.console(client.session.save());
 
-  const channelsList = Storage.getChannels();
+  const undelivered: any[] = [];
 
   for (const event of mockMessages as any) {
     const { className, message } = event;
     const channelId = parseInt(message?.peerId?.channelId);
-    if (className === 'UpdateNewChannelMessage' && channelsList.includes(channelId) && message?.message) {
+    if (className === 'UpdateNewChannelMessage' && Storage.channels.includes(channelId) && message?.message) {
       const parsedData = getForwardInfo(channelId, message.message, message.id);
       Reporter.log(parsedData);
-      if (parsedData?.data?.district && parsedData?.data?.price) {
+      if (parsedData) {
         botBroadcast(parsedData);
+      } else {
+        undelivered.push(parsedData);
       }
+    } else {
+      undelivered.push(channelId);
     }
   }
-
-  botSetup();
+  setTimeout(() => {
+    Reporter.admin(
+      `Messages delivered: ${mockMessages.length - undelivered.length}/${mockMessages.length}${
+        undelivered.length ? ', undelivered: ' + undelivered.join(', ') : ''
+      }`,
+    );
+  }, 1000);
 };

@@ -5,7 +5,7 @@
   "files": [
     "src/index.dev.ts",
     "src/index.test.ts",
-    "src/global.d.ts"
+    "src/types/global.d.ts"
   ],
   "compilerOptions": {
     "allowUmdGlobalAccess": true,

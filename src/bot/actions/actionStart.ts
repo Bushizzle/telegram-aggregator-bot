@@ -3,6 +3,7 @@ import { addUser, Reporter } from '../../helpers';
 import { TLambdaResponse } from '../../types';
 import { notifyWelcome } from '../../helpers/notifications';
 import { ERR_SERVER } from '../../constants';
+import { Storage } from '../../storage';
 
 export const botStart = (from: TelegramBot.Message['from']) => {
   from &&
@@ -10,10 +11,10 @@ export const botStart = (from: TelegramBot.Message['from']) => {
     void addUser(from.id, from.first_name, from.username)
       .then(({ message, welcomed }: TLambdaResponse) => {
         if (!welcomed) void notifyWelcome(from.id);
-        void global.bot.sendMessage(from.id, message);
+        void Storage.bot.sendMessage(from.id, message);
       })
       .catch(err => {
-        void global.bot.sendMessage(from.id, ERR_SERVER);
+        void Storage.bot.sendMessage(from.id, ERR_SERVER);
         Reporter.error([from.id, err]);
       });
 };

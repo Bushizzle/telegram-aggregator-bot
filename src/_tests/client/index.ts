@@ -1,1 +1,1 @@
-export { runClient } from './client';
+export { runTestClient } from './client';
