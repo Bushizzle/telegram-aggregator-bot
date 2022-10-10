@@ -51,4 +51,6 @@ export const runTestClient = async (apiId: number, apiHash: string, apiSession: 
       }`,
     );
   }, 1000);
+
+  return client;
 };
