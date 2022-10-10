@@ -2,49 +2,53 @@ import { TelegramClient } from 'telegram';
 import { StringSession } from 'telegram/sessions';
 //@ts-expect-error, find types
 import input from 'input';
-import * as Bot from 'node-telegram-bot-api';
+
 import { getForwardInfo } from '../../helpers';
-import { CHANNELS } from '../../constants';
-import { botBroadcast, botSetup } from '../../bot';
+import { botBroadcast } from '../../bot';
 import { Reporter } from '../../helpers';
+import { Storage } from '../../storage';
 
-// @ts-ignore
-import * as mockUsers from '../mocks/users';
 import * as mockMessages from '../mocks/messages.json';
+import * as mockUsers from '../mocks/users.json';
 
-export const runTestClient = async (
-  token: string,
-  apiId: number,
-  apiHash: string,
-  apiSession: string | undefined,
-  usersLambda: string,
-) => {
+export const runTestClient = async (apiId: number, apiHash: string, apiSession: string | undefined) => {
   const stringSession = new StringSession(apiSession);
   const client: TelegramClient = new TelegramClient(stringSession, apiId, apiHash, {
     connectionRetries: 5,
   });
-  const bot = new Bot(token, { polling: true });
+  Storage.users = mockUsers;
 
   await client.start({
     phoneNumber: async () => await input.text('Please enter your number: '),
     password: async () => await input.text('Please enter your password: '),
     phoneCode: async () => await input.text('Please enter the code you received: '),
-    onError: err => Reporter.error([err], bot),
+    onError: err => Reporter.error([err]),
   });
 
   if (!apiSession) Reporter.console(client.session.save());
 
+  const undelivered: any[] = [];
+
   for (const event of mockMessages as any) {
     const { className, message } = event;
     const channelId = parseInt(message?.peerId?.channelId);
-    if (className === 'UpdateNewChannelMessage' && CHANNELS.includes(channelId) && message?.message) {
+    if (className === 'UpdateNewChannelMessage' && Storage.channels.includes(channelId) && message?.message) {
       const parsedData = getForwardInfo(channelId, message.message, message.id);
       Reporter.log(parsedData);
-      if (parsedData?.data?.district && parsedData?.data?.price) {
-        botBroadcast(bot, parsedData, mockUsers, usersLambda);
+      if (parsedData) {
+        botBroadcast(parsedData);
+      } else {
+        undelivered.push(parsedData);
       }
+    } else {
+      undelivered.push(channelId);
     }
   }
-
-  botSetup(bot, mockUsers, usersLambda);
+  setTimeout(() => {
+    Reporter.admin(
+      `Messages delivered: ${mockMessages.length - undelivered.length}/${mockMessages.length}${
+        undelivered.length ? ', undelivered: ' + undelivered.join(', ') : ''
+      }`,
+    );
+  }, 1000);
 };

@@ -1,9 +1,10 @@
-import * as TelegramBot from 'node-telegram-bot-api';
-import { TUser } from '../types';
+import * as Bot from 'node-telegram-bot-api';
+import { Storage } from '../storage';
 import { botMessageHandler } from './actions';
 import { botQueryHandler } from './queries';
 
-export const botSetup = (bot: TelegramBot, users: TUser[], usersLambda: string): void => {
-  bot.on('message', msg => botMessageHandler(bot, msg, users, usersLambda));
-  bot.on('callback_query', callbackQuery => botQueryHandler(bot, callbackQuery, users, usersLambda));
+export const botSetup = (token: string): void => {
+  Storage.bot = new Bot(token, { polling: true });
+  Storage.bot.on('message', msg => botMessageHandler(msg));
+  Storage.bot.on('callback_query', callbackQuery => botQueryHandler(callbackQuery));
 };

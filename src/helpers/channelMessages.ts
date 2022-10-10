@@ -1,8 +1,9 @@
 import { REGEXP } from '../constants';
-import type { TConfig, TDistrict, TUser } from '../types';
+import type { TAptData, TConfig, TDistrict, TUser } from '../types';
+import { Storage } from '../storage';
 import { cutChunks } from './index';
 
-export const removeGarbage = (str: string, key: string): string => {
+export const removeGarbage = (str: string, key: keyof TAptData): string => {
   if (key === 'contacts') return str;
   return (
     str
@@ -53,4 +54,11 @@ export const messagesInterval = (
       chunk.forEach(({ userId }) => callback(userId));
     }, timeoutStep * index);
   });
+};
+
+export const ifInteresting = (type: string, channelId: number, message: any, callback: () => void) => {
+  const channelsList = Storage.channels;
+  if (type === 'UpdateNewChannelMessage' && channelsList.includes(channelId) && message?.message) {
+    callback();
+  }
 };

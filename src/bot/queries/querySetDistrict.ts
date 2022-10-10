@@ -1,19 +1,10 @@
-import * as TelegramBot from 'node-telegram-bot-api';
 import { ALL_DISTRICTS_KEYS, ERR_SERVER } from '../../constants';
 import { editMessageText, editUserSettings, Reporter } from '../../helpers';
 import { keyboardDistricts } from '../../keyboards';
 import { TUser } from '../../types';
+import { Storage } from '../../storage';
 
-export const botSetDistrict = (
-  bot: TelegramBot,
-  action: string,
-  user: TUser,
-  users: TUser[],
-  chatId: number,
-  msgId: number,
-  userId: number,
-  usersLambda: string,
-) => {
+export const botSetDistrict = (action: string, user: TUser, chatId: number, msgId: number, userId: number) => {
   let {
     settings: { districts: selectedDistricts },
   } = user;
@@ -28,23 +19,21 @@ export const botSetDistrict = (
   }
 
   void editMessageText(
-    bot,
     `Районы (выбрано: ${selectedDistricts.length})`,
     chatId,
     msgId,
     keyboardDistricts(selectedDistricts),
   );
 
-  editUserSettings(users, userId, { districts: selectedDistricts }, usersLambda).catch(err => {
+  editUserSettings(userId, { districts: selectedDistricts }).catch(err => {
     user.settings.districts = oldDistrictsValue.slice();
     void editMessageText(
-      bot,
       `Районы (выбрано: ${oldDistrictsValue.length})`,
       chatId,
       msgId,
       keyboardDistricts(oldDistrictsValue),
     );
-    void bot.sendMessage(userId, ERR_SERVER);
-    Reporter.error([userId, err], bot);
+    void Storage.bot.sendMessage(userId, ERR_SERVER);
+    Reporter.error([userId, err]);
   });
 };

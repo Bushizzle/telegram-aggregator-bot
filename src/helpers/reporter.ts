@@ -1,7 +1,5 @@
 import * as log4js from 'log4js';
-import * as TelegramBot from 'node-telegram-bot-api';
-
-const { ADMIN_TELEGRAM_ID } = process.env;
+import { Storage } from '../storage';
 
 log4js.configure({
   appenders: {
@@ -49,9 +47,12 @@ export class Reporter {
   public static console(message: any) {
     console.info(message);
   }
-  public static error(messages: any[], bot?: TelegramBot) {
+  public static error(messages: any[]) {
     const errorText = `[ERROR]\n${Reporter.mapMessage(messages)}`;
     err.error(errorText);
-    ADMIN_TELEGRAM_ID && void bot?.sendMessage(ADMIN_TELEGRAM_ID, errorText);
+    Storage.admin && void Storage.bot.sendMessage(Storage.admin, errorText);
+  }
+  public static admin(message: string) {
+    Storage.admin && void Storage.bot.sendMessage(Storage.admin, message);
   }
 }

@@ -1,16 +1,51 @@
 import { REGEXP } from '../constants';
 import { TConfig } from '../types';
 
+const ALL_MARKERS = [
+  {
+    key: 'size',
+    matches: [REGEXP.SIZE],
+  },
+  {
+    key: 'floor',
+    matches: [REGEXP.FLOOR],
+  },
+  {
+    key: 'rooms',
+    matches: ['комнаты', 'комната'],
+  },
+  {
+    key: 'bedrooms',
+    matches: [REGEXP.BEDROOMS],
+  },
+  {
+    key: 'balcony',
+    matches: ['балкон'],
+  },
+  {
+    key: 'pets',
+    matches: [REGEXP.PETS],
+  },
+  {
+    key: 'price',
+    matches: [REGEXP.PRICE, REGEXP.PRICE_REVERTED],
+  },
+  {
+    key: 'address',
+    matches: [REGEXP.ADDRESS],
+  },
+  {
+    key: 'geo',
+    matches: [REGEXP.GEO],
+  },
+];
+
 export const configs: TConfig[] = [
   // АРЕНДА ЖИЛЬЯ 🇬🇪 ГРУЗИЯ 1148878384
   {
     id: 1148878384,
     link: 'arenda_ge',
     keys: [
-      // {
-      // key: 'district',
-      // matches: ['в:'],
-      // },
       {
         key: 'text',
         matches: ['описание:'],
@@ -181,110 +216,19 @@ export const configs: TConfig[] = [
   {
     id: 1170680593,
     link: 'GE4YOU',
-    markers: [
-      {
-        key: 'size',
-        matches: [REGEXP.SIZE],
-      },
-      {
-        key: 'floor',
-        matches: [REGEXP.FLOOR],
-      },
-      {
-        key: 'bedrooms',
-        matches: [REGEXP.BEDROOMS],
-      },
-      {
-        key: 'balcony',
-        matches: ['балкон'],
-      },
-      {
-        key: 'pets',
-        matches: [REGEXP.PETS],
-      },
-      {
-        key: 'price',
-        matches: [REGEXP.PRICE, REGEXP.PRICE_REVERTED],
-      },
-      {
-        key: 'geo',
-        matches: [REGEXP.GEO],
-      },
-    ],
+    markers: ALL_MARKERS,
   },
   // АРЕНДА ТБИЛИСИ🏚 1748218743
   {
     id: 1748218743,
     link: 'arendatbilisikv',
-    markers: [
-      {
-        key: 'size',
-        matches: [REGEXP.SIZE],
-      },
-      {
-        key: 'floor',
-        matches: [REGEXP.FLOOR],
-      },
-      {
-        key: 'rooms',
-        matches: ['комнаты', 'комната'],
-      },
-      {
-        key: 'bedrooms',
-        matches: [REGEXP.BEDROOMS],
-      },
-      {
-        key: 'balcony',
-        matches: ['балкон'],
-      },
-      {
-        key: 'pets',
-        matches: [REGEXP.PETS],
-      },
-      {
-        key: 'price',
-        matches: [REGEXP.PRICE, REGEXP.PRICE_REVERTED],
-      },
-      {
-        key: 'address',
-        matches: [REGEXP.ADDRESS],
-      },
-      {
-        key: 'geo',
-        matches: [REGEXP.GEO],
-      },
-    ],
+    markers: ALL_MARKERS,
   },
   // Тбилиси 🏡 Аренда | Продажа | Недвижимость | Жилье | Квартиры 1356271391
   {
     id: 1356271391,
     link: 'tbilisi_apartments',
-    markers: [
-      {
-        key: 'size',
-        matches: [REGEXP.SIZE],
-      },
-      {
-        key: 'price',
-        matches: [REGEXP.PRICE, REGEXP.PRICE_REVERTED],
-      },
-      {
-        key: 'bedrooms',
-        matches: [REGEXP.BEDROOMS],
-      },
-      {
-        key: 'floor',
-        matches: [REGEXP.FLOOR],
-      },
-      {
-        key: 'address',
-        matches: [REGEXP.ADDRESS],
-      },
-      {
-        key: 'geo',
-        matches: [REGEXP.GEO],
-      },
-    ],
+    markers: ALL_MARKERS,
     exceptions: [REGEXP.SOLD],
   },
   // Тбилиси аренда от собственников
@@ -324,48 +268,40 @@ export const configs: TConfig[] = [
       },
     ],
   },
-  // Channel0 (Dev)
+  // НОВЫЕ КАНАЛЫ
+  // Недвижимость в Тбилиси
   {
-    id: 1568042374,
-    link: '',
-    markers: [
-      {
-        key: 'size',
-        matches: [REGEXP.SIZE],
-      },
-      {
-        key: 'floor',
-        matches: [REGEXP.FLOOR],
-      },
-      {
-        key: 'rooms',
-        matches: ['комнаты', 'комната'],
-      },
-      {
-        key: 'bedrooms',
-        matches: [REGEXP.BEDROOMS],
-      },
-      {
-        key: 'balcony',
-        matches: ['балкон'],
-      },
-      {
-        key: 'pets',
-        matches: [REGEXP.PETS],
-      },
-      {
-        key: 'price',
-        matches: [REGEXP.PRICE, REGEXP.PRICE_REVERTED],
-      },
-      {
-        key: 'address',
-        matches: [REGEXP.ADDRESS],
-      },
-      {
-        key: 'geo',
-        matches: [REGEXP.GEO],
-      },
-    ],
-    exceptions: ['батуми', 'кутаиси'],
+    id: 1580911411,
+    link: 'propertyintbilisi',
+    markers: ALL_MARKERS,
+    exceptions: ['батуми', 'кутаиси', 'владикавказ'],
+  },
+  // Aренда Квартиры Тбилиси
+  {
+    id: 1618128148,
+    link: 'arendavgruzii',
+    markers: ALL_MARKERS,
+    exceptions: ['батуми', 'кутаиси', 'владикавказ'],
+  },
+  // Apartments in Tbilisi, Georgia.
+  {
+    id: 1744130346,
+    link: 'yourhousGeo',
+    markers: ALL_MARKERS,
+    exceptions: ['батуми', 'кутаиси', 'владикавказ'],
+  },
+  // For rent in Georgia 🇬🇪 Аренда квартир в Грузии
+  {
+    id: 1359892966,
+    link: 'Forrentge',
+    markers: ALL_MARKERS,
+    exceptions: ['батуми', 'кутаиси', 'владикавказ'],
+  },
+  // Квартиры в Тбилиси - NEW
+  {
+    id: 1676033482,
+    link: 'kvartiry_v_tbilisi',
+    markers: ALL_MARKERS,
+    exceptions: ['батуми', 'кутаиси', 'владикавказ'],
   },
 ];
