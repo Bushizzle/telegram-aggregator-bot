@@ -32,7 +32,9 @@ export const runClient = async (apiId: number, apiHash: string, apiSession: stri
     ifInteresting(eventClassName, channelId, message, () => {
       const parsedData = getForwardInfo(channelId, message.message, message.id);
       Reporter.log(parsedData);
-      parsedData && botBroadcast(parsedData);
+      if (parsedData?.data?.district || parsedData?.data?.address || parsedData?.data?.geo) {
+        botBroadcast(parsedData);
+      }
     });
   });
 };
