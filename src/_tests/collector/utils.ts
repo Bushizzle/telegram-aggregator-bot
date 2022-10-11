@@ -1,30 +1,23 @@
+import { Api, TelegramClient } from 'telegram';
 import { Reporter } from '../../helpers';
-import { TelegramClient } from "telegram";
 
-
-function getMessagesInPeriod(messages, period) {
+const getMessagesInPeriod = (messages: any[], period: number) => {
   const now = Date.now();
   return messages.filter(({ date }) => now - date * 1000 < period);
-}
+};
 
-const collectGroupMessages = async (client: TelegramClient, groupId, period) => {
-  Reporter.info('start collecting');
+export const collectGroupMessages = async (client: TelegramClient, groupId: number, period: number, amount = 10) => {
+  Reporter.log('start collecting');
   let offset = 0;
-  let finished = false;
   const resultData = [];
-  do {
-    const result = await client.invoke(
-      new Api.messages.GetHistory({
-        peer: `-100${groupId}`,
-        limit: 100,
-        addOffset: offset * 100,
-      }),
-    );
-    const messages = getMessagesInPeriod(result.messages, period);
-    resultData.push(...messages);
-    logger.info(`iteration ${offset} done with ${messages.length} messages`);
-    offset += 1;
-    if (messages.length < 100) finished = true;
-  } while (!finished);
+  const result: any = await client.invoke(
+    new Api.messages.GetHistory({
+      peer: `-100${groupId}`,
+      limit: 10,
+    }),
+  );
+  const messages = period ? getMessagesInPeriod(result.messages, period) : result.messages;
+  resultData.push(...messages);
+  Reporter.log(`iteration ${offset} done with ${messages.length} messages`);
   return resultData;
 };

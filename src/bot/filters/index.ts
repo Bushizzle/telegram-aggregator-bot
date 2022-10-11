@@ -11,10 +11,13 @@ export const usersFilter = (users: TUser[], data: TAptData): TUser[] => {
     let flag = true;
 
     if (flag && districtId && filtersConfig.district.required) {
-      flag = settings.districts.includes(districtId);
+      flag = settings.districts.includes(districtId) || (!filtersConfig.district.required && !districtId);
     }
-    if (flag && priceValue && filtersConfig.price.required) {
-      flag = !!getPrice(settings.price)?.expression(+priceValue);
+    if (flag && priceValue) {
+      console.log(settings.price);
+      console.log(+priceValue);
+      console.log(getPrice(settings.price)?.expression(+priceValue));
+      flag = !!getPrice(settings.price)?.expression(+priceValue) || (!filtersConfig.district.required && !priceValue);
     }
 
     return flag;

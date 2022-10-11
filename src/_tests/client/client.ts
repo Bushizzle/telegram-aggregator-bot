@@ -11,7 +11,7 @@ import { Storage } from '../../storage';
 import * as mockMessages from '../mocks/messages.json';
 import * as mockUsers from '../mocks/users.json';
 
-export const runTestClient = async (apiId: number, apiHash: string, apiSession: string | undefined) => {
+export const runTestClient = async (apiId: number, apiHash: string, apiSession: string | undefined): Promise<void> => {
   const stringSession = new StringSession(apiSession);
   const client: TelegramClient = new TelegramClient(stringSession, apiId, apiHash, {
     connectionRetries: 5,
@@ -51,6 +51,4 @@ export const runTestClient = async (apiId: number, apiHash: string, apiSession: 
       }`,
     );
   }, 1000);
-
-  return client;
 };
