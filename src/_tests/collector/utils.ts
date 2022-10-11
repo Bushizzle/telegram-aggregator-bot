@@ -13,11 +13,23 @@ export const collectGroupMessages = async (client: TelegramClient, groupId: numb
   const result: any = await client.invoke(
     new Api.messages.GetHistory({
       peer: `-100${groupId}`,
-      limit: 10,
+      limit: amount,
     }),
   );
   const messages = period ? getMessagesInPeriod(result.messages, period) : result.messages;
   resultData.push(...messages);
-  Reporter.log(`iteration ${offset} done with ${messages.length} messages`);
+  Reporter.log(`Iteration ${offset + 1} for channel ${groupId} done with ${messages.length} messages`);
   return resultData;
 };
+
+export const mapMinMsgData = (msg: any[]) =>
+  msg.map(msg => ({
+    className: 'UpdateNewChannelMessage',
+    message: {
+      message: msg.message,
+      id: msg.id,
+      peerId: {
+        channelId: msg.peerId.channelId,
+      },
+    },
+  }));

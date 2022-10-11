@@ -38,10 +38,10 @@ export const runTestClient = async (apiId: number, apiHash: string, apiSession: 
       if (parsedData) {
         botBroadcast(parsedData);
       } else {
-        undelivered.push(parsedData);
+        undelivered.push(message.id);
       }
     } else {
-      undelivered.push(channelId);
+      undelivered.push(message.id);
     }
   }
   setTimeout(() => {

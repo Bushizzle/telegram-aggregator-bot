@@ -1,4 +1,5 @@
 import * as path from 'path';
+import * as fs from 'fs';
 import * as dotenv from 'dotenv';
 import { StringSession } from 'telegram/sessions';
 import { TelegramClient } from 'telegram';
@@ -6,7 +7,7 @@ import { TelegramClient } from 'telegram';
 import input from 'input';
 import { Storage } from '../../storage';
 import { Reporter } from '../../helpers';
-import { collectGroupMessages } from './utils';
+import { collectGroupMessages, mapMinMsgData } from './utils';
 
 export const runCollector = async (channels: number[], envPath: string) => {
   Storage.init();
@@ -29,15 +30,18 @@ export const runCollector = async (channels: number[], envPath: string) => {
       phoneCode: async () => await input.text('Please enter the code you received: '),
       onError: err => Reporter.error([err]),
     });
-
-    const msg = [];
-    void channels.forEach(async (channelId: number): Promise<void> => {
-      const messages = await collectGroupMessages(client, channelId, 0, 10);
-      msg.push(...messages);
-    });
-    // write to file
-
     if (!TELEGRAM_API_SESSION) Reporter.console(client.session.save());
+
+    const messages = await Promise.all(
+      channels.map((channelId: number) => collectGroupMessages(client, channelId, 0, 30)),
+    );
+    Reporter.log('Writing results to messages.json...');
+    const textMessages = messages.flat().filter(message => message.message);
+    fs.writeFileSync('./src/_tests/mocks/messages.json', JSON.stringify(mapMinMsgData(textMessages)));
+    fs.writeFileSync('./src/_tests/mocks/messagesRaw.json', JSON.stringify(messages.flat()));
+    Reporter.log('Writing done');
+    await client.destroy();
+    return;
   } else {
     Reporter.error(['[ENV] not enough data in env variables to start client']);
   }
