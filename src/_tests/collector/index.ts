@@ -1,0 +1,1 @@
+export { runCollector } from './collectorApp';

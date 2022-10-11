@@ -9,7 +9,7 @@ import { Reporter } from '../helpers';
 import { Storage } from '../storage';
 import { ifInteresting } from '../helpers/channelMessages';
 
-export const runClient = async (apiId: number, apiHash: string, apiSession: string | undefined) => {
+export const runClient = async (apiId: number, apiHash: string, apiSession: string | undefined): Promise<void> => {
   const stringSession = new StringSession(apiSession);
   const client: TelegramClient = new TelegramClient(stringSession, apiId, apiHash, {
     connectionRetries: 5,
