@@ -8,7 +8,7 @@ export const REGEXP = {
   PETS: /(питом(цы|цами|ец|цем|ца))|(животн(ыми?|ых|ого))/i,
   ADDRESS:
     /(ул(ица|\s|$|\(|,|\.|-)|пр(оспект|\s|$|\(|,|\.|-)|ш(оссе|\s|$|\(|,|\.|-)|бульвара?|переул(ок|ка)|набережн(ая|ой))/i,
-  GEO: /\/goo.gl\/maps/i,
+  GEO: /(\/goo.gl\/maps)|(maps.app.goo.gl)|(maps.google.)/i,
 
   make: {
     district: (val: string) => new RegExp(`([^А-Яа-яA-Za-z]|^)${val}([^А-Яа-яA-Za-z]|$)`, 'i'),

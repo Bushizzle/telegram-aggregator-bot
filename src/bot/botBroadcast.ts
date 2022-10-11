@@ -7,7 +7,7 @@ import { usersFilter } from './filters';
 export const botBroadcast = ({ data, message }: { data: TAptData; message: string }) => {
   const targetUsers = usersFilter(Storage.users, data);
 
-  if (data?.district && targetUsers.length) {
+  targetUsers.length &&
     messagesInterval(
       targetUsers,
       userId => {
@@ -20,5 +20,4 @@ export const botBroadcast = ({ data, message }: { data: TAptData; message: strin
       20,
       500,
     );
-  }
 };

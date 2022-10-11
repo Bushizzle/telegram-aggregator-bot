@@ -35,7 +35,7 @@ export const runTestClient = async (apiId: number, apiHash: string, apiSession: 
     if (className === 'UpdateNewChannelMessage' && Storage.channels.includes(channelId) && message?.message) {
       const parsedData = getForwardInfo(channelId, message.message, message.id);
       Reporter.log(parsedData);
-      if (parsedData) {
+      if (parsedData?.data?.district || parsedData?.data?.address || parsedData?.data?.geo) {
         botBroadcast(parsedData);
       } else {
         undelivered.push(parsedData);
@@ -50,5 +50,6 @@ export const runTestClient = async (apiId: number, apiHash: string, apiSession: 
         undelivered.length ? ', undelivered: ' + undelivered.join(', ') : ''
       }`,
     );
+    console.log(undelivered);
   }, 1000);
 };
