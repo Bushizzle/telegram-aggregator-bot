@@ -1,3 +1,4 @@
+import type { Api } from 'telegram';
 import { InlineKeyboardButton } from 'node-telegram-bot-api';
 import { PRICES, DISTRICTS } from '../constants';
 
@@ -16,8 +17,8 @@ export const cutChunks = (array: any[], chunkSize = 2): any[] => {
   return result;
 };
 
-export const getForwardInfo = (channelId: number, message: string, messageId: number) => {
-  const messageData = getMessageData(message, channelId);
+export const getForwardInfo = (channelId: number, message: Api.Message) => {
+  const messageData = getMessageData(message.message, channelId);
   if (!messageData) return undefined;
 
   const { data, config } = messageData;
@@ -26,7 +27,7 @@ export const getForwardInfo = (channelId: number, message: string, messageId: nu
 
   return {
     data,
-    message: `${replyText}\nКанал: https://t.me/${config.link}\nОбъявление: https://t.me/c/${channelId}/${messageId}`,
+    message: `${replyText}\nКанал: https://t.me/${config.link}\nОбъявление: https://t.me/c/${channelId}/${message.id}`,
   };
 };
 

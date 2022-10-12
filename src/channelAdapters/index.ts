@@ -55,5 +55,5 @@ export const dataToText = (data: TAptData) => {
   for (const key in data) {
     text += `${DICTIONARY[key as keyof typeof DICTIONARY]}: ${data[key as keyof TAptData]}\n`;
   }
-  return text.split('\n').sort().join('\n');
+  return text.split('\n').sort().join('\n') + '\n';
 };

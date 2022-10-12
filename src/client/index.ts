@@ -30,7 +30,7 @@ export const runClient = async (apiId: number, apiHash: string, apiSession: stri
     const channelId = parseInt(message?.peerId?.channelId?.value || message?.peerId?.channelId);
 
     ifInteresting(eventClassName, channelId, message, () => {
-      const parsedData = getForwardInfo(channelId, message.message, message.id);
+      const parsedData = getForwardInfo(channelId, message);
       Reporter.log(parsedData);
       if (parsedData?.data?.district || parsedData?.data?.address || parsedData?.data?.geo) {
         botBroadcast(parsedData);

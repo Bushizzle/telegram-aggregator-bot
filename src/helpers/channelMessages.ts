@@ -21,7 +21,7 @@ export const mapStrings = (str: string, divider?: string): string[] => str.split
 
 export const getValue = (str: string, substr: string): string =>
   str
-    .substring(substr.length + str.toLowerCase().indexOf(substr))
+    .substring(substr.length + str.toLowerCase().indexOf(substr.toLowerCase()))
     .trim()
     .replace(/[!@#$%^&*]/g, '');
 

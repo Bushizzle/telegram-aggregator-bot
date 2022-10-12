@@ -274,7 +274,7 @@ export const configs: TConfig[] = [
     id: 1580911411,
     link: 'propertyintbilisi',
     markers: ALL_MARKERS,
-    exceptions: ['батуми', 'кутаиси', 'владикавказ', 'кобулети'],
+    exceptions: ['батуми', 'кутаиси', 'владикавказ', 'кобулети', '#продажа'],
   },
   // Aренда Квартиры Тбилиси
   {

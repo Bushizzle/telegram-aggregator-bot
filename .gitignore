@@ -10,5 +10,5 @@
 /.env.local
 /dist
 /*/**/messages.json
-/src/_tests/mocks/messages.json
-/src/_tests/mocks/messagesRaw.json
+src/_tests/mocks/messages.json
+src/_tests/mocks/messagesRaw.json

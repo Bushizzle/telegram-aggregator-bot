@@ -33,7 +33,7 @@ export const runTestClient = async (apiId: number, apiHash: string, apiSession: 
     const { className, message } = event;
     const channelId = parseInt(message?.peerId?.channelId);
     if (className === 'UpdateNewChannelMessage' && Storage.channels.includes(channelId) && message?.message) {
-      const parsedData = getForwardInfo(channelId, message.message, message.id);
+      const parsedData = getForwardInfo(channelId, message);
       Reporter.log(parsedData);
       if (parsedData?.data?.district || parsedData?.data?.address || parsedData?.data?.geo) {
         botBroadcast(parsedData);
@@ -50,6 +50,7 @@ export const runTestClient = async (apiId: number, apiHash: string, apiSession: 
         undelivered.length ? ', undelivered: ' + undelivered.join(', ') : ''
       }`,
     );
+    // eslint-disable-next-line no-console
     console.log(undelivered);
   }, 1000);
 };
