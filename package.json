@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "collect": "ts-node ./src/index.collect.ts",
     "test": "ts-node ./src/index.test.ts",
     "watch": "ts-node ./src/index.dev.ts",
     "start": "node dist",
